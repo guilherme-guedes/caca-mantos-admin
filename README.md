@@ -10,3 +10,9 @@ Neste repositório estão versionadas a aplicação frontend e a backend que dã
 
 - Frontend : Anguar 15
 - Backend : ASP.NET Core 9
+
+
+### TODO
+
+- Utilizar banco relacional 
+- Worker / Agent (Fila) para replicar os dados alterados do admin nos bancos utilizado pela aplicação principal
