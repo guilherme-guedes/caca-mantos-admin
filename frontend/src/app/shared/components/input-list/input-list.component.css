@@ -1,0 +1,22 @@
+.list-container {
+    margin-bottom: 1rem;
+}
+
+.terms-list {
+    margin-top: 0.5rem;
+}
+
+.badge {
+    font-size: 0.9em;
+    padding: 0.5rem 0.75rem;
+}
+
+.btn-close {
+    font-size: 0.7em;
+    padding: 0;
+    margin-left: 0.5rem;
+}
+
+.gap-2 {
+    gap: 0.5rem !important;
+}

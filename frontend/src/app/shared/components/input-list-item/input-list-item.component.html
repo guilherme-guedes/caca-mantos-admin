@@ -1,0 +1,37 @@
+<div class="list-container">
+    <label *ngIf="label" class="form-label">{{ pluralLabel | titlecase }}</label>
+    
+    <div class="input-group">
+        <select class="form-select" [ngClass]="['form-select', (availableItems.length == 0 || !selectedItemId ? 'placeholder' : '')]" name="opcoes" [(ngModel)]="selectedItemId" [disabled]="availableItems.length === 0"> 
+            <option class="placeholder" value="">{{ placeholder }}</option>
+            <option *ngFor="let item of availableItems" [value]="item.id"> {{ item.name }}</option>
+        </select>
+        <button class="btn btn-outline-primary" type="button" (click)="addItem()" [disabled]="!selectedItemId">
+            <i class="fas fa-plus"></i> Adicionar
+        </button>
+    </div>
+    
+    <div *ngIf="selectedItems.length > 0" class="list">
+        <div class="d-flex flex-wrap gap-2">
+            <span *ngFor="let relation of selectedItems; let i = index" class="badge bg-info d-flex align-items-center">
+                <i class="fas fa-link me-1"></i>
+                {{ relation.name }}
+                <button type="button" class="btn-close btn-close-white ms-2" (click)="removeItem(i)" aria-label="Remover relacionamento">
+                </button>
+            </span>
+        </div>
+        
+        <small class="text-muted mt-2 d-block">
+            {{ selectedItems.length }} {{ label }}(s)
+        </small>
+    </div>
+    
+    <div *ngIf="selectedItems.length === 0" class="microcopy">
+        <small>Nada adicionado ainda</small>
+    </div>
+    
+    <div *ngIf="availableItems.length === 0 && showEmptyAlert" class="alert alert-warning mt-2">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        Sem {{pluralLabel | lowercase}} disponíveis
+    </div>
+</div>

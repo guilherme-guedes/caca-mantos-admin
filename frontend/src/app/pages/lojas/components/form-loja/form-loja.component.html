@@ -1,0 +1,59 @@
+<div class="card shadow">
+    <div class="card-body p-4">
+        <h5 class="card-title text-center mb-4">Nova loja</h5>
+        <div class="form-container">        
+            <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+                <div class="form-group mt-3 mb-2">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Nome de apresentação do time"
+                        [class.is-invalid]="form.get('nome')?.invalid && form.get('nome')?.touched">
+                    
+                    <div class="invalid-feedback" *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
+                        <small *ngIf="form.get('nome')?.errors?.['required']">Nome é obrigatório</small>
+                        <small *ngIf="form.get('nome')?.errors?.['minlength']">Nome deve ter pelo menos 3 caracteres</small>
+                    </div>
+                </div>
+                <div class="form-group mt-3 mb-2">
+                    <label for="site" class="form-label">Site</label>
+                    <input type="text" class="form-control" id="site" formControlName="site" placeholder="Url do site">
+                    
+                    <div class="invalid-feedback" *ngIf="form.get('site')?.invalid && form.get('site')?.touched">
+                        <small *ngIf="form.get('site')?.errors?.['required']">Site é obrigatório</small>
+                        <small *ngIf="form.get('site')?.errors?.['minlength']">Site deve ter pelo menos 12 caracteres</small>
+                    </div>
+                </div>
+                <div class="form-group mt-3 mb-2">
+                    <label for="urlBusca" class="form-label">Nome de busca</label>
+                    <input type="text" class="form-control" id="urlBusca" formControlName="urlBusca" placeholder="Nome para busca nos sites">
+                    
+                    <div class="invalid-feedback" *ngIf="form.get('urlBusca')?.invalid && form.get('urlBusca')?.touched">
+                        <small *ngIf="form.get('urlBusca')?.errors?.['required']">Url de busca é obrigatório</small>
+                        <small *ngIf="form.get('urlBusca')?.errors?.['minlength']">Url de busca deve ter pelo menos 12 caracteres</small>
+                    </div>
+                </div>
+                
+                <div class="form-group mt-3 mb-2 row switch-container">    
+                    <div class="form-check form-switch col-md-6">
+                        <input class="form-check-input" type="checkbox" role="switch" id="switchAtiva" formControlName="ativa">
+                        <label class="form-check-label" for="switchAtiva">Ativa</label>
+                    </div>
+                    <div class="form-check form-switch col-md-6">
+                        <input class="form-check-input" type="checkbox" role="switch" id="switchParceira" formControlName="parceira">
+                        <label class="form-check-label" for="switchParceira">Parceira</label>
+                    </div>     
+                </div>
+                
+                <div class="form-group mt-3 mb-2">                                
+                    <app-input-list-item label="time" pluralLabel="Times" formControlName="times" [maxItems]="100" [showEmptyAlert]="false">
+                    </app-input-list-item>
+                </div>
+
+                <div class="form-group mt-6 mb-4 text-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

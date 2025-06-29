@@ -1,0 +1,48 @@
+<header>
+  <nav class="navbar navbar-expand-lg admin-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-cogs me-2"></i>Caça Mantos
+      </a>
+
+      <button class="navbar-toggler" type="button" (click)="toggleNavbar()" [attr.aria-expanded]="isNavbarCollapsed">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" [class.show]="!isNavbarCollapsed">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeMenu === 'dashboard'" (click)="setActiveMenu('dashboard')" routerLink="/home" routerLinkActive="active">
+              <i class="fas fa-chart-simple"></i>&nbsp;Dashboard
+            </a>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" (click)="toggleDropdown()" [class.show]="isDropdownOpen">
+              <i class="fas fa-database"></i>&nbsp;Cadastros
+            </a>
+            <ul class="dropdown-menu" [class.show]="isDropdownOpen">
+              <li>
+                <a class="dropdown-item" [class.active]="activeMenu === 'times'" (click)="setActiveMenu('times')" routerLink="/times">
+                  <i class="fas fa-shield"></i>&nbsp;Times
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" [class.active]="activeMenu === 'lojas'" (click)="setActiveMenu('lojas')" routerLink="/lojas">
+                  <i class="fas fa-cart-shopping"></i>&nbsp;Lojas
+                </a>
+              </li>
+            </ul>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeMenu === 'camisas'" (click)="setActiveMenu('camisas')" routerLink="/camisas">
+              <i class="fas fa-shirt"></i>&nbsp;Camisas
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </nav>
+</header>

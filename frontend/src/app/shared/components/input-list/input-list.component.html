@@ -1,0 +1,26 @@
+<div class="list-container">
+    <label *ngIf="label" class="form-label">{{ labelPlural | titlecase }}</label>      
+    <div class="input-group">
+        <input type="text" class="form-control" [placeholder]="placeholder" [(ngModel)]="textoAtual" (keyup.enter)="adicionar()" #inputRef>
+        <button class="btn btn-outline-primary" type="button" (click)="adicionar()" [disabled]="!textoAtual?.trim()">
+            <i class="fas fa-plus"></i> Adicionar
+        </button>
+    </div>
+    
+    <div *ngIf="termos.length > 0" class="terms-list">
+        <div class="d-flex flex-wrap gap-2">
+            <span *ngFor="let term of termos; let i = index" class="badge bg-secondary d-flex align-items-center">
+                {{ term }}
+                <button type="button" class="btn-close btn-close-white ms-2" (click)="remover(i)" aria-label="Remover"></button>
+            </span>
+        </div>
+        
+        <small class="text-muted mt-2 d-block">
+            {{ termos.length }} {{ label }}(s)
+        </small>
+    </div>
+    
+    <div *ngIf="termos.length === 0" class="microcopy">
+        <small>Nada adicionado ainda</small>
+    </div>
+</div>

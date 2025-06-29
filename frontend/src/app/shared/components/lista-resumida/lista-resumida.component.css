@@ -1,0 +1,21 @@
+.card {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border: none;
+      margin-bottom: 1rem;
+}
+    
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.no-border{
+    border:none;
+}
+
+.container-acoes{    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;    
+    justify-content: flex-end;
+}

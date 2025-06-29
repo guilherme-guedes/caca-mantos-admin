@@ -1,0 +1,36 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">{{ tituloLista }}</h5>
+    <button *ngIf="exibirAdd" class="btn btn-outline-primary no-border btn-sm"  (click)="onAdd()"><i class="fas fa-plus"></i>&nbsp;Adicionar</button>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th *ngFor="let coluna of colunas">{{ coluna.label }}</th>
+                    <th *ngIf="exibirAcoes"></th>
+                </tr>
+            </thead>
+                <tbody>
+                    <tr *ngFor="let registro of registros">
+                        <td *ngFor="let coluna of colunas">
+                            {{ getValue(registro, coluna.key) }}
+                        </td>
+                        <td *ngIf="exibirAcoes" class="container-acoes">
+                            <button class="btn btn-sm btn-outline-primary me-1" (click)="onEdit(registro)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" (click)="onDelete(registro)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="registros.length === 0">
+                        <td [attr.colspan]="colunas.length + (exibirAcoes ? 1 : 0)" class="text-center text-muted py-3">
+                        Nenhum registro encontrado
+                        </td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+</div>

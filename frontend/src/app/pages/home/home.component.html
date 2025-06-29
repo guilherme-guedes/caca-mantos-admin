@@ -1,0 +1,36 @@
+<div class="container-fluid">
+
+  <div class="row mt-8">
+    <div class="col-md-4">
+      <app-dashboard-counter titulo="times" [valor]=5 icone="fas fa-shield">
+      </app-dashboard-counter>
+    </div>  
+    <div class="col-md-4">
+      <app-dashboard-counter titulo="lojas" [valor]=3 icone="fas fa-cart-shopping">
+      </app-dashboard-counter>
+    </div>  
+    <div class="col-md-4">
+      <app-dashboard-counter titulo="camisas" [valor]=30 icone="fas fa-shirt">
+      </app-dashboard-counter>
+    </div>  
+  </div>
+
+  <div class="row mt-8">
+    <div class="col-md-6">
+      <app-lista-resumida [registros]="times" [colunas]="camposTimes" tituloLista="Times"
+        (edicaoClicked)="editarTime($event)" 
+        (remocaoClicked)="removerTime($event)" 
+        (adicicaoClicked)="adicionarTime()">
+      </app-lista-resumida>
+    </div>        
+
+    <div class="col-md-6">
+      <app-lista-resumida [registros]="lojas" [colunas]="camposLojas" tituloLista="Lojas" 
+      (edicaoClicked)="editarLoja($event)" 
+      (remocaoClicked)="removerLoja($event)" 
+      (adicicaoClicked)="adicionarLoja()">
+      </app-lista-resumida>
+    </div>        
+  </div>
+
+</div>

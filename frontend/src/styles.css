@@ -1,0 +1,73 @@
+/** Elementos */
+h2, h5, th {
+    color: #2b3137!important;
+}
+
+/** Extensões gerais */
+.mt-6 {
+    margin-top: 2rem!important;
+}
+.mt-8 {
+    margin-top: 3rem!important;
+}
+
+.mb-6 {
+    margin-bottom: 2rem!important;
+}
+.mb-8 {
+    margin-bottom: 3rem!important;
+}
+
+.placeholder, .microcopy, input[type="text"]::placeholder{    
+  font-size: 0.9rem!important;
+  color: #798a9bc9!important;
+}
+
+.placeholder, input[type="text"]::placeholder{      
+  font-style: italic!important;
+}
+
+.microcopy{
+  margin-top: 4px;
+  font-style: normal!important;
+}
+
+
+/** Sobreescritas */
+.row {
+    margin-right: unset!important;
+    margin-left: unset!important;
+}
+
+.content div.container-fluid{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.switch-container{
+    flex-direction: row!important;
+    align-content: center!important;
+    justify-content: center!important;
+    align-items: center!important;
+}
+ 
+.form-switch {    
+    /* margin-left: 12px!important; */
+    display: flex!important;
+    justify-content: center!important;
+    align-items: center!important;
+    align-content: center!important;
+    flex-wrap: nowrap!important;
+    flex-direction: row!important;
+    gap: 15px!important;
+    padding-left: unset!important;
+} 
+ 
+.form-switch  >  .form-check-input{
+    font-size: 1.3rem!important;
+}
+
+/** Global */
+main{
+    background-color: #f1f1f1;
+}
