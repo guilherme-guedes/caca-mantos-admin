@@ -8,7 +8,7 @@ Neste repositório estão versionadas a aplicação frontend e a backend que dã
 
 ### Tecnologias
 
-- Frontend : Anguar 15
+- Frontend : Anguar 19
 - Backend : ASP.NET Core 9
 
 
