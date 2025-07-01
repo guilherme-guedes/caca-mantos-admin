@@ -32,9 +32,19 @@ try
     builder.Services.AddScoped<IMapper, ServiceMapper>();
     new TimeDocumentoMapping().Register(TypeAdapterConfig.GlobalSettings);
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: "Dev", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    });
+
     builder.Services.AddControllers();
 
     var app = builder.Build();
+
+    if (app.Environment.IsDevelopment())
+        app.UseCors("Dev");
+    
+
     //if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ListaResumidaComponent } from "../../shared/components/lista-resumida/lista-resumida.component";
 import { IColunaTabela } from "../../shared/components/lista-resumida/lista-resumida.component";
 import { Time } from '../../models/time';
@@ -6,6 +6,10 @@ import { Loja } from '../../models/loja';
 import { Router } from '@angular/router';
 import { CounterComponent } from '../../shared/components/dashboard/counter/counter.component';
 import { LojaTableService } from '../../services/loja-table.service';
+import { TimeService } from '../../services/time.service';
+import { finalize, Subject, takeUntil } from 'rxjs';
+import { TimeMapperService } from '../../services/time-mapper.service';
+import { PaginaMapperService } from '../../services/pagina-mapper.service';
 
 @Component({
   selector: 'home-page',
@@ -13,27 +17,28 @@ import { LojaTableService } from '../../services/loja-table.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   camposLojas: IColunaTabela[] = [];
-
-  constructor(private readonly router: Router,
-              private readonly lojaTableService: LojaTableService){
-    this.camposLojas = this.lojaTableService.criarColunasTabelaLojaResumida();
-  }
-  
-  times = [
-    { id: '1', nome: 'Fluminense', identificador: 'fluminense-rj' },
-    { id: '2', nome: 'Botafogo', identificador: 'botafogo-rj' },
-    { id: '3', nome: 'Flamengo', identificador: 'flamengo-rj' },
-    { id: '4', nome: 'Vasco', identificador: 'vasco-rj' },
-    { id: '5', nome: 'Palmeiras', identificador: 'palmeiras-sp' }
-  ];
+  carregando = false;
+  times : Time[] = []; 
   
   camposTimes: IColunaTabela[] = [
-    { key: 'id', label: 'Id' },
+    { key: 'identificador', label: 'Identificador' },
     { key: 'nome', label: 'Nome' },
-    { key: 'identificador', label: 'Identificador' }
   ];
+  
+  constructor(private readonly router: Router,
+              private readonly lojaTableService: LojaTableService,
+              private readonly timeService: TimeService,
+              private readonly mapperTime: TimeMapperService,
+              private readonly mapperPagina: PaginaMapperService<Time>){
+  }
+  
+  ngOnInit(): void {
+    this.carregando = true;
+    this.carregarTimes();
+  }
   
   lojas = [
     { id: '1', nome: 'Memórias do Esporte', site: 'memoriasdoesporte.com.br' },
@@ -42,6 +47,20 @@ export class HomeComponent {
     { id: '4', nome: 'Brechó do Futebol', site: 'brechodofut.com.br' },
     { id: '5', nome: 'Chanti Sports', site: 'chantisports.com.br' },
   ];
+
+  private carregarTimes() {
+    this.camposLojas = this.lojaTableService.criarColunasTabelaLojaResumida();
+    this.timeService.consultarTimes(1, 5)
+      .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
+      .subscribe({
+        next: (dadosPaginaTimes) => {
+          this.times = this.mapperPagina.paraModelos(dadosPaginaTimes, this.mapperTime.paraModelos);
+        },
+        error: (error) => {
+          console.log("Erro: " + error);
+        }
+      });
+  }
 
   // Eventos  
   adicionarTime() {
@@ -71,5 +90,10 @@ export class HomeComponent {
       this.lojas = this.lojas.filter(t => t.id !== loja.id);
       console.log('Atualizar lista e remover no back');
     }
+  }
+    
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
