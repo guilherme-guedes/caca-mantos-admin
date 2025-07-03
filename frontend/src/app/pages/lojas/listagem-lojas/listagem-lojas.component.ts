@@ -10,10 +10,12 @@ import { LojaService } from '../../../services/loja.service';
 import { LojaMapperService } from '../../../services/loja-mapper.service';
 import { PaginaMapperService } from '../../../services/pagina-mapper.service';
 import { FiltroLoja } from '../../../models/dto/filtro-loja';
+import { PaginacaoComponent } from "../../../shared/components/paginacao/paginacao.component";
+import { Pagina } from '../../../models/dto/pagina';
 
 @Component({
   selector: 'app-listagem-lojas',
-  imports: [ReactiveFormsModule, TabelaDinamicaComponent],  
+  imports: [ReactiveFormsModule, TabelaDinamicaComponent, PaginacaoComponent],  
   templateUrl: './listagem-lojas.component.html',
   styleUrl: './listagem-lojas.component.css'
 })
@@ -21,11 +23,12 @@ export class ListagemLojasComponent implements OnInit, OnDestroy{
   private destroy$ = new Subject<void>();
   private TAMANHO_PAGINA = 10;
   carregando: boolean;
-  form: FormGroup;
+  formGroup: FormGroup;
   camposLojas: IColunaTabela[];
   lojas : Loja[];
+  paginacao: Pagina<Loja>;
 
-  constructor(private fb: FormBuilder,
+  constructor(private formBuilder: FormBuilder,
               private readonly router: Router,
               private readonly tableService: LojaTableService,
               private readonly lojaService: LojaService,
@@ -34,36 +37,38 @@ export class ListagemLojasComponent implements OnInit, OnDestroy{
       this.carregando = true;
       this.camposLojas = [];
       this.lojas = [];
-      this.form = this.criarFormVazio();
+      this.formGroup = this.criarFormVazio();
+      this.paginacao = new Pagina<Loja>();
   }    
 
   ngOnInit(): void {    
     this.camposLojas = this.tableService.criarColunasTabelaCompleta();  
-    this.carregarLojas(1);
+    this.consultarLojas(1);
   }
 
   private criarFormVazio() {
-    return this.fb.group({
+    return this.formBuilder.group({
       trecho: [''],
       parceira: [],
       ativa: []
     });
   }  
 
-  private criarFiltro(){
+  private carregarFiltro(){
     let filtro : FiltroLoja = {} as FiltroLoja;
-    Object.assign(filtro, this.form);
+    Object.assign(filtro, this.formGroup);
     return filtro;
   }
   
-  private carregarLojas(pagina: number) {
-      var filtro = this.criarFiltro()   
+  private consultarLojas(pagina: number) {
+      var filtro = this.carregarFiltro()   
 
       this.lojaService.consultar(pagina, this.TAMANHO_PAGINA, filtro.trecho, filtro.ativa, filtro.parceira)
                     .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
                     .subscribe({
                       next: (dadosPaginaLojas) => {
-                        this.lojas = this.mapperPagina.paraModelos(dadosPaginaLojas, this.mapperLoja.paraModelos);
+                        this.paginacao =  this.mapperPagina.paraModelosPaginados(dadosPaginaLojas, this.mapperLoja.paraModelos);
+                        this.lojas = this.paginacao.itens;
                       },
                       error: (error) => {
                         console.log("Erro: " + error);
@@ -81,7 +86,7 @@ export class ListagemLojasComponent implements OnInit, OnDestroy{
 
   // Eventos
   onSubmit(item: any) {
-    this.carregarLojas(1);
+    this.consultarLojas(1);
   } 
 
   adicionarLoja() {
@@ -98,6 +103,11 @@ export class ListagemLojasComponent implements OnInit, OnDestroy{
       console.log('Atualizar lista e remover no back');
     }
   }
+
+  onPageChanged(pagina: number){
+    this.consultarLojas(pagina);
+  }
+      
       
   ngOnDestroy(): void {
     this.destroy$.next();

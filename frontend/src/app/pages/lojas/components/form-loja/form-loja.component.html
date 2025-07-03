@@ -2,33 +2,33 @@
     <div class="card-body p-4">
         <h5 class="card-title text-center mb-4">Nova loja</h5>
         <div class="form-container">        
-            <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+            <form [formGroup]="formGroup" (ngSubmit)="onSubmit($event)">
                 <div class="form-group mt-3 mb-2">
                     <label for="nome" class="form-label">Nome</label>
                     <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Nome de apresentação do time"
-                        [class.is-invalid]="form.get('nome')?.invalid && form.get('nome')?.touched">
+                        [class.is-invalid]="formGroup.get('nome')?.invalid && formGroup.get('nome')?.touched">
                     
-                    <div class="invalid-feedback" *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
-                        <small *ngIf="form.get('nome')?.errors?.['required']">Nome é obrigatório</small>
-                        <small *ngIf="form.get('nome')?.errors?.['minlength']">Nome deve ter pelo menos 3 caracteres</small>
+                    <div class="invalid-feedback" *ngIf="formGroup.get('nome')?.invalid && formGroup.get('nome')?.touched">
+                        <small *ngIf="formGroup.get('nome')?.errors?.['required']">Nome é obrigatório</small>
+                        <small *ngIf="formGroup.get('nome')?.errors?.['minlength']">Nome deve ter pelo menos 3 caracteres</small>
                     </div>
                 </div>
                 <div class="form-group mt-3 mb-2">
                     <label for="site" class="form-label">Site</label>
                     <input type="text" class="form-control" id="site" formControlName="site" placeholder="Url do site">
                     
-                    <div class="invalid-feedback" *ngIf="form.get('site')?.invalid && form.get('site')?.touched">
-                        <small *ngIf="form.get('site')?.errors?.['required']">Site é obrigatório</small>
-                        <small *ngIf="form.get('site')?.errors?.['minlength']">Site deve ter pelo menos 12 caracteres</small>
+                    <div class="invalid-feedback" *ngIf="formGroup.get('site')?.invalid && formGroup.get('site')?.touched">
+                        <small *ngIf="formGroup.get('site')?.errors?.['required']">Site é obrigatório</small>
+                        <small *ngIf="formGroup.get('site')?.errors?.['minlength']">Site deve ter pelo menos 12 caracteres</small>
                     </div>
                 </div>
                 <div class="form-group mt-3 mb-2">
                     <label for="urlBusca" class="form-label">Nome de busca</label>
                     <input type="text" class="form-control" id="urlBusca" formControlName="urlBusca" placeholder="Nome para busca nos sites">
                     
-                    <div class="invalid-feedback" *ngIf="form.get('urlBusca')?.invalid && form.get('urlBusca')?.touched">
-                        <small *ngIf="form.get('urlBusca')?.errors?.['required']">Url de busca é obrigatório</small>
-                        <small *ngIf="form.get('urlBusca')?.errors?.['minlength']">Url de busca deve ter pelo menos 12 caracteres</small>
+                    <div class="invalid-feedback" *ngIf="formGroup.get('urlBusca')?.invalid && formGroup.get('urlBusca')?.touched">
+                        <small *ngIf="formGroup.get('urlBusca')?.errors?.['required']">Url de busca é obrigatório</small>
+                        <small *ngIf="formGroup.get('urlBusca')?.errors?.['minlength']">Url de busca deve ter pelo menos 12 caracteres</small>
                     </div>
                 </div>
                 

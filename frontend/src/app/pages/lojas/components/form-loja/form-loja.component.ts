@@ -14,24 +14,24 @@ import { Loja } from '../../../../models/loja';
   styleUrl: './form-loja.component.css'
 })
 export class FormLojaComponent {
-  form: FormGroup;
+  formGroup: FormGroup;
   
   @Input() dadosIniciais: Loja | null = null;
   @Output() onSubmited = new EventEmitter<Loja>();
 
   constructor(
     private readonly lojaFormService: LojaFormService) {
-      this.form = this.lojaFormService.criarForm();
+      this.formGroup = this.lojaFormService.criarForm();
   }
 
   ngOnChanges(): void {
     if (this.dadosIniciais)
-      this.form.patchValue(this.dadosIniciais);    
+      this.formGroup.patchValue(this.dadosIniciais);    
   }
   
   onSubmit(item: any) {
-    if (this.form.valid) {
-      const loja = Object.assign({}, this.form.value);
+    if (this.formGroup.valid) {
+      const loja = Object.assign({}, this.formGroup.value);
       loja.id = this.dadosIniciais ? this.dadosIniciais.id : null;
       
       this.onSubmited.emit(loja);

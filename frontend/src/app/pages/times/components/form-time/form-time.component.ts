@@ -19,7 +19,7 @@ import { Time } from '../../../../models/time';
   styleUrl: './form-time.component.css'
 })
 export class FormTimeComponent {
-  form: FormGroup;
+  formGroup: FormGroup;
   
   @Input() dadosIniciais: Time  | null = null;
   @Output() onSubmited = new EventEmitter<any>();
@@ -27,18 +27,18 @@ export class FormTimeComponent {
   constructor(
     private readonly router: Router,
     private readonly timeFormService: TimeFormService) {
-      this.form = this.timeFormService.criarForm();
+      this.formGroup = this.timeFormService.criarForm();
   }
   
   ngOnChanges(): void{
     if(this.dadosIniciais) {
-      this.form.patchValue(this.dadosIniciais);
+      this.formGroup.patchValue(this.dadosIniciais);
     }
   }
 
   onSubmit(item: any) {
-    if(this.form.valid) {
-      const time = Object.assign({}, this.form.value);
+    if(this.formGroup.valid) {
+      const time = Object.assign({}, this.formGroup.value);
       time.id = this.dadosIniciais ? this.dadosIniciais.id : null;
 
       this.onSubmited.emit(item);

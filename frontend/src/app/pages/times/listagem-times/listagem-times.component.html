@@ -44,7 +44,10 @@
                                     (adicicaoClicked)="adicionarTime()">
                                 </app-tabela-dinamica>
                             </div>
-                        </form>                            
+                        </form>   
+                        <app-paginacao [paginaAtual]="paginacao.paginaAtual" [tamanhoPagina]="paginacao.itensPorPagina" [totalRegistros]="paginacao.quantidadeTotal"
+                            (paginaAlterada)="onPageChanged($event)">
+                        </app-paginacao>                         
                     </div>
                 </div>
             </div>

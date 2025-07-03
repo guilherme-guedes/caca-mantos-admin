@@ -5,7 +5,7 @@
                 <div class="card-body p-4">        
                     <h5 class="card-title text-center mb-4">Lojas</h5>
                     <div class="form-container">
-                        <form [formGroup]="form" (ngSubmit)="onSubmit($event)"> 
+                        <form [formGroup]="formGroup" (ngSubmit)="onSubmit($event)"> 
                         
                             <div>
                                 <div class="row">
@@ -40,7 +40,10 @@
                                     (adicicaoClicked)="adicionarLoja()">
                                 </app-tabela-dinamica>
                             </div>
-                        </form>                            
+                        </form>
+                        <app-paginacao [paginaAtual]="paginacao.paginaAtual" [tamanhoPagina]="paginacao.itensPorPagina" [totalRegistros]="paginacao.quantidadeTotal"
+                            (paginaAlterada)="onPageChanged($event)">
+                        </app-paginacao>                                
                     </div>
                 </div>
             </div>

@@ -9,10 +9,13 @@ import { TimeService } from '../../../services/time.service';
 import { TimeMapperService } from '../../../services/time-mapper.service';
 import { PaginaMapperService } from '../../../services/pagina-mapper.service';
 import { FiltroTime } from '../../../models/dto/filtro-time';
+import { PaginacaoComponent } from "../../../shared/components/paginacao/paginacao.component";
+import { Pagina } from '../../../models/dto/pagina';
+import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-listagem-times',
-  imports: [ReactiveFormsModule, TabelaDinamicaComponent],
+  imports: [ReactiveFormsModule, TabelaDinamicaComponent, PaginacaoComponent],
   templateUrl: './listagem-times.component.html',
   styleUrl: './listagem-times.component.css'
 })
@@ -22,9 +25,10 @@ export class ListagemTimesComponent implements OnInit, OnDestroy{
   carregando: boolean;
   form: FormGroup;
   camposTimes: IColunaTabela[];
-  times : Time[];     
+  times : Time[];   
+  paginacao: Pagina<Time>;
 
-  constructor(private fb: FormBuilder,
+  constructor(private formBuilder: FormBuilder,
               private readonly router: Router,
               private readonly tableService: TimeTableService,
               private readonly timeService: TimeService,
@@ -33,16 +37,17 @@ export class ListagemTimesComponent implements OnInit, OnDestroy{
       this.carregando = true;
       this.camposTimes = [];
       this.times = [];
+      this.paginacao = new Pagina<Time>();
       this.form = this.criarFormVazio();
   }    
 
   ngOnInit(): void {    
     this.camposTimes = this.tableService.criarColunasTabelaCompleta();  
-    this.carregarTimes(1);    
+    this.consultarTimes(1);    
   }
 
   private criarFormVazio() {
-    return this.fb.group({
+    return this.formBuilder.group({
       trecho: [''],
       destaque: [false],
       principal: [false],
@@ -50,36 +55,33 @@ export class ListagemTimesComponent implements OnInit, OnDestroy{
     });
   }  
   
-  private criarFiltro(){
+  private carregarFiltros(){
       let filtro : FiltroTime = {} as FiltroTime;
       Object.assign(filtro, this.form);
       return filtro;
   }
   
-  private carregarTimes(pagina: number) {
-      var filtro = this.criarFiltro();
+  private consultarTimes(pagina: number) {
+      var filtro = this.carregarFiltros();
 
       this.timeService.consultar(pagina, this.TAMANHO_PAGINA, filtro.trecho, filtro.ativo, filtro.destaque, filtro.principal)
         .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
         .subscribe({
           next: (dadosPaginaLojas) => {
-            this.times = this.mapperPagina.paraModelos(dadosPaginaLojas, this.mapperTime.paraModelos);
+            this.paginacao =  this.mapperPagina.paraModelosPaginados(dadosPaginaLojas, this.mapperTime.paraModelos);
+            this.times = this.paginacao.itens;
           },
           error: (error) => {
             console.log("Erro: " + error);
           }
         });
   }
-  
-  getValue(objeto: any, path: string): any {
-    return path.split('.').reduce((current, prop) => current?.[prop], objeto);
-  }
 
   // Eventos
   onSubmit(item: any) {
     if (this.form.valid) {
       const filtro = Object.assign({}, this.form.value);      
-      // consultar lojas por filtro
+      this.consultarTimes(1);
     }
   } 
   
@@ -97,10 +99,13 @@ export class ListagemTimesComponent implements OnInit, OnDestroy{
       console.log('Atualizar lista e remover no back');
     }
   }
+
+  onPageChanged(pagina: number){
+    this.consultarTimes(pagina);
+  }
       
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

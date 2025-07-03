@@ -1,0 +1,8 @@
+nav {
+    margin-top: 15px;
+}
+
+.pagination li > button {
+    height: 35px;
+    width: 35px;
+}

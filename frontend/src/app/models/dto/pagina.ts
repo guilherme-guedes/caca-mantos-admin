@@ -1,7 +1,7 @@
-export interface Pagina<T> {
-  paginaAtual: number,
-  totalPaginas: number,
-  itensPorPagina: number,    
-  quantidadeTotal: number,
-  itens: T[]
+export class Pagina<T> {
+  paginaAtual: number = 1;
+  totalPaginas: number = 1;
+  itensPorPagina: number = 10;   
+  quantidadeTotal: number = 0;
+  itens: T[] = [];
 }

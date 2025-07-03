@@ -2,33 +2,33 @@
     <div class="card-body p-4">
         <h5 class="card-title text-center mb-4">Novo time</h5>
         <div class="form-container">        
-            <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+            <form [formGroup]="formGroup" (ngSubmit)="onSubmit($event)">
                 <div class="form-group mt-3 mb-2">
                     <label for="nome" class="form-label">Nome</label>
                     <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Nome de apresentação do time"
-                        [class.is-invalid]="form.get('nome')?.invalid && form.get('nome')?.touched">
+                        [class.is-invalid]="formGroup.get('nome')?.invalid && formGroup.get('nome')?.touched">
                     
-                    <div class="invalid-feedback" *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
-                        <small *ngIf="form.get('nome')?.errors?.['required']">Nome é obrigatório</small>
-                        <small *ngIf="form.get('nome')?.errors?.['minlength']">Nome deve ter pelo menos 3 caracteres</small>
+                    <div class="invalid-feedback" *ngIf="formGroup.get('nome')?.invalid && formGroup.get('nome')?.touched">
+                        <small *ngIf="formGroup.get('nome')?.errors?.['required']">Nome é obrigatório</small>
+                        <small *ngIf="formGroup.get('nome')?.errors?.['minlength']">Nome deve ter pelo menos 3 caracteres</small>
                     </div>
                 </div>
                 <div class="form-group mt-3 mb-2">
                     <label for="identificador" class="form-label">Identificador</label>
                     <input type="text" class="form-control" id="identificador" formControlName="identificador" placeholder="Identificador único (ex: fluminense-rj)">
                     
-                    <div class="invalid-feedback" *ngIf="form.get('identificador')?.invalid && form.get('identificador')?.touched">
-                        <small *ngIf="form.get('identificador')?.errors?.['required']">Identificador é obrigatório</small>
-                        <small *ngIf="form.get('identificador')?.errors?.['minlength']">Identificador deve ter pelo menos 5 caracteres</small>
+                    <div class="invalid-feedback" *ngIf="formGroup.get('identificador')?.invalid && formGroup.get('identificador')?.touched">
+                        <small *ngIf="formGroup.get('identificador')?.errors?.['required']">Identificador é obrigatório</small>
+                        <small *ngIf="formGroup.get('identificador')?.errors?.['minlength']">Identificador deve ter pelo menos 5 caracteres</small>
                     </div>
                 </div>
                 <div class="form-group mt-3 mb-2">
                     <label for="nomeBusca" class="form-label">Nome de busca</label>
                     <input type="text" class="form-control" id="nomeBusca" formControlName="nomeBusca" placeholder="Nome para busca nos sites">
                     
-                    <div class="invalid-feedback" *ngIf="form.get('nomeBusca')?.invalid && form.get('nomeBusca')?.touched">
-                        <small *ngIf="form.get('nomeBusca')?.errors?.['required']">Nome de busca é obrigatório</small>
-                        <small *ngIf="form.get('nomeBusca')?.errors?.['minlength']">Nome de busca deve ter pelo menos 3 caracteres</small>
+                    <div class="invalid-feedback" *ngIf="formGroup.get('nomeBusca')?.invalid && formGroup.get('nomeBusca')?.touched">
+                        <small *ngIf="formGroup.get('nomeBusca')?.errors?.['required']">Nome de busca é obrigatório</small>
+                        <small *ngIf="formGroup.get('nomeBusca')?.errors?.['minlength']">Nome de busca deve ter pelo menos 3 caracteres</small>
                     </div>
                 </div>
                 
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 
-                <div class="form-group mt-3 mb-2" *ngIf="form.get('principal')?.value">                                
+                <div class="form-group mt-3 mb-2" *ngIf="formGroup.get('principal')?.value">                                
                     <app-input-list-item label="time" pluralLabel="Times homônimos" formControlName="homonimos" [maxItems]="10" [showEmptyAlert]="false">
                     </app-input-list-item>
                 </div>
