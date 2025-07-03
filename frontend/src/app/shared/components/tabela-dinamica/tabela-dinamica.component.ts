@@ -4,30 +4,32 @@ import { CommonModule } from '@angular/common';
 export interface IColunaTabela {
   key: string;
   label: string;
+  bool: boolean;
 }
 
 @Component({
-  selector: 'app-lista-resumida',
+  selector: 'app-tabela-dinamica',
   standalone: true,
   imports: [
     CommonModule
   ],
-  templateUrl: './lista-resumida.component.html',
-  styleUrl: './lista-resumida.component.css'
+  templateUrl: './tabela-dinamica.component.html',
+  styleUrl: './tabela-dinamica.component.css'
 })
-export class ListaResumidaComponent {
+export class TabelaDinamicaComponent {
   @Input() tituloLista: string = '';
   @Input() registros: any[] = [];
   @Input() colunas: IColunaTabela[] = [];
   @Input() exibirAcoes: boolean = true;
   @Input() exibirAdd: boolean = true;
+  @Input() flutuante: boolean = true;
   
   @Output() edicaoClicked = new EventEmitter<any>();
   @Output() remocaoClicked = new EventEmitter<any>();
   @Output() adicicaoClicked = new EventEmitter<void>();
   
-  getValue(objeto: any, path: string): any {
-    return path.split('.').reduce((current, prop) => current?.[prop], objeto);
+  obterValorCampo(objeto: any, campo: string): any {
+    return campo.split('.').reduce((objetoCorrente, prop) => objetoCorrente?.[prop], objeto);
   }
   
   onEdit(item: any) {

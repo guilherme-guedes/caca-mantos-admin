@@ -12,17 +12,12 @@ namespace backend.Domain.Model
         public bool principal { get; private set; }
         public IList<Time> homonimos { get; private set; }
 
-        public Time(String id)
-        {
-            this.id = id;
-        }
-
         public Time(String id,
-                    String nome,
-                    String identificador,
-                    String nomeBusca,
-                    IList<String> termos,
-                    bool destaque,
+                    String nome = null,
+                    String identificador = null,
+                    String nomeBusca = null,
+                    IList<String> termos = null,
+                    bool destaque = false,
                     bool ativo = true,
                     bool principal = true,
                     IList<Time> homonimos = null)
@@ -38,13 +33,14 @@ namespace backend.Domain.Model
             this.homonimos = homonimos;
         }
 
-        public void PreencherInformacoes(
-                    String nome,
-                    String identificador,
-                    String nomeBusca,
-                    IList<String> termos,
-                    bool destaque,
-                    bool ativo = true)
+        public void PreencherInformacoes(String nome = null,
+                    String identificador = null,
+                    String nomeBusca = null,
+                    IList<String> termos = null,
+                    bool destaque = false,
+                    bool ativo = true,
+                    bool principal = true,
+                    IList<Time> homonimos = null)
         {
             this.nome = nome;
             this.identificador = identificador;

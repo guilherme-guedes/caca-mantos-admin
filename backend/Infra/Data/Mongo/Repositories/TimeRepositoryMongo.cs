@@ -1,15 +1,13 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using backend.Domain.IRepositories;
 using backend.Domain.Model;
 using backend.DTO;
-using backend.Infra.Data;
 using backend.Infra.Data.Documentos;
 using backend.Utils;
 using Mapster;
 using MongoDB.Driver;
 
-namespace backend.Infra.Repositories
+namespace backend.Infra.Data.Mongo.Repositories
 {
     public class TimeRepositoryMongo : ITimeRepository
     {
@@ -34,7 +32,7 @@ namespace backend.Infra.Repositories
                                                 bool? ativo = null,
                                                 bool? principal = null)
         {
-            _logger.LogDebug("Consultando resumos de camisa...");
+            _logger.LogDebug("Consultando times...");
 
             pagina = pagina <= 0 ? 1 : pagina;
             tamanhoPagina = tamanhoPagina <= 0 || tamanhoPagina > 20 ? 10 : tamanhoPagina;
@@ -51,6 +49,15 @@ namespace backend.Infra.Repositories
 
                 sort = Builders<TimeDocumento>.Sort.Descending(bson => bson.Nome).Ascending(bson => bson.Identificador);
             }
+
+            if (ativo.HasValue)
+                filter &= builder.Where(l => l.Ativo);                
+                
+            if (destaque.HasValue)
+                filter &= builder.Where(l => l.Destaque);
+
+            if (principal.HasValue)
+                filter &= builder.Where(l => l.Principal);         
 
             var skip = (pagina - 1) * tamanhoPagina;
             var query = _contexto.Times.Find(filter).Sort(sort);

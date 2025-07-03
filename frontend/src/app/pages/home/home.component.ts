@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ListaResumidaComponent } from "../../shared/components/lista-resumida/lista-resumida.component";
-import { IColunaTabela } from "../../shared/components/lista-resumida/lista-resumida.component";
+import { TabelaDinamicaComponent } from "../../shared/components/tabela-dinamica/tabela-dinamica.component";
+import { IColunaTabela } from "../../shared/components/tabela-dinamica/tabela-dinamica.component";
 import { Time } from '../../models/time';
 import { Loja } from '../../models/loja';
 import { Router } from '@angular/router';
@@ -10,51 +10,61 @@ import { TimeService } from '../../services/time.service';
 import { finalize, Subject, takeUntil } from 'rxjs';
 import { TimeMapperService } from '../../services/time-mapper.service';
 import { PaginaMapperService } from '../../services/pagina-mapper.service';
+import { TimeTableService } from '../../services/time-table.service';
+import { LojaService } from '../../services/loja.service';
+import { LojaMapperService } from '../../services/loja-mapper.service';
 
 @Component({
   selector: 'home-page',
-  imports: [ListaResumidaComponent, CounterComponent],
+  imports: [TabelaDinamicaComponent, CounterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   camposLojas: IColunaTabela[] = [];
+  camposTimes: IColunaTabela[] = [];
   carregando = false;
   times : Time[] = []; 
-  
-  camposTimes: IColunaTabela[] = [
-    { key: 'identificador', label: 'Identificador' },
-    { key: 'nome', label: 'Nome' },
-  ];
+  lojas : Loja[] = []; 
   
   constructor(private readonly router: Router,
               private readonly lojaTableService: LojaTableService,
+              private readonly timeTableService: TimeTableService,
               private readonly timeService: TimeService,
+              private readonly lojaService: LojaService,
               private readonly mapperTime: TimeMapperService,
-              private readonly mapperPagina: PaginaMapperService<Time>){
+              private readonly mapperLoja: LojaMapperService,
+              private readonly mapperPagina: PaginaMapperService){
   }
   
   ngOnInit(): void {
     this.carregando = true;
     this.carregarTimes();
+    this.carregarLojas();
   }
-  
-  lojas = [
-    { id: '1', nome: 'Memórias do Esporte', site: 'memoriasdoesporte.com.br' },
-    { id: '2', nome: 'BK Camisetas', site: 'bkcamisetas.com.br' },
-    { id: '3', nome: 'Manto Sagrado', site: 'mantosagrado.com.br' },
-    { id: '4', nome: 'Brechó do Futebol', site: 'brechodofut.com.br' },
-    { id: '5', nome: 'Chanti Sports', site: 'chantisports.com.br' },
-  ];
 
   private carregarTimes() {
-    this.camposLojas = this.lojaTableService.criarColunasTabelaLojaResumida();
-    this.timeService.consultarTimes(1, 5)
+    this.camposTimes = this.timeTableService.criarColunasTabelaResumida();
+    this.timeService.consultar(1, 5)
       .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
       .subscribe({
         next: (dadosPaginaTimes) => {
           this.times = this.mapperPagina.paraModelos(dadosPaginaTimes, this.mapperTime.paraModelos);
+        },
+        error: (error) => {
+          console.log("Erro: " + error);
+        }
+      });
+  }
+
+  private carregarLojas() {
+    this.camposLojas = this.lojaTableService.criarColunasTabelaResumida();
+    this.lojaService.consultar(1, 5)
+      .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
+      .subscribe({
+        next: (dadosPaginaLojas) => {
+          this.lojas = this.mapperPagina.paraModelos(dadosPaginaLojas, this.mapperLoja.paraModelos);
         },
         error: (error) => {
           console.log("Erro: " + error);

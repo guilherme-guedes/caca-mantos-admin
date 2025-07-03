@@ -19,3 +19,10 @@
     flex-wrap: nowrap;    
     justify-content: flex-end;
 }
+
+.nao-flutuante:has(table){
+    border-top: 1px solid var(--bs-border-color);
+    border-bottom: unset;
+    border-right: unset;
+    border-left: unset;
+}

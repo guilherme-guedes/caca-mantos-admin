@@ -14,5 +14,10 @@ Neste repositório estão versionadas a aplicação frontend e a backend que dã
 
 ### TODO
 
+- Utilizar DTOs para não ferir entidades Loja com times válidos e Times com homônimos válidos)
+- Validações de instância de Lojas e Times
+
+### ROADMAP
+
 - Utilizar banco relacional 
 - Worker / Agent (Fila) para replicar os dados alterados do admin nos bancos utilizado pela aplicação principal

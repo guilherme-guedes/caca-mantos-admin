@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListaResumidaComponent } from './lista-resumida.component';
+import { TabelaDinamicaComponent } from './tabela-dinamica.component';
 
 describe('ListaResumidaComponent', () => {
-  let component: ListaResumidaComponent;
-  let fixture: ComponentFixture<ListaResumidaComponent>;
+  let component: TabelaDinamicaComponent;
+  let fixture: ComponentFixture<TabelaDinamicaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListaResumidaComponent]
+      imports: [TabelaDinamicaComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ListaResumidaComponent);
+    fixture = TestBed.createComponent(TabelaDinamicaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

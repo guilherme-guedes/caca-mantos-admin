@@ -1,0 +1,24 @@
+.switch-container-horizontal{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    align-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.switch-container-horizontal > .form-switch{
+    display: inline-block!important;   
+    margin-top:  20px;
+    margin-bottom: unset;
+}
+
+.switch-container-horizontal > .form-switch > .form-check-input{
+    margin-left: unset!important;
+}
+
+.switch-container-horizontal > .form-switch > .form-check-label{
+    margin-left: 10px!important;
+    margin-top: 2px;
+}

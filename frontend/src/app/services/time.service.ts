@@ -11,11 +11,11 @@ export class TimeService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-  obterTime(id: string){
+  obter(id: string){
     return this.httpClient.get(`${this.urlBase}/${this.endpoint}/${id}`);
   }
 
-  consultarTimes(pagina: number,
+  consultar(pagina: number,
                 tamanhoPagina: number,
                 trecho: string = "",
                 destaque: boolean | null = null,

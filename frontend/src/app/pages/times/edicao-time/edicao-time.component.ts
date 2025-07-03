@@ -25,7 +25,7 @@ export class EdicaoTimeComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
     if (id) {
-      this.timeService.obterTime(id)
+      this.timeService.obter(id)
                     .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
                     .subscribe({
                       next: (dadosTime) => {

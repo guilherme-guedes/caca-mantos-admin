@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using backend.Domain.Factories;
 using backend.Domain.Model;
 using backend.Infra.Data.Documentos;
 using Mapster;
@@ -13,7 +10,7 @@ namespace backend.Infra.Data.Mongo.Mapping
         public void Register(TypeAdapterConfig config)
         {            
             config.NewConfig<string, Time>()
-                    .MapWith(src => new Time(src));
+                    .MapWith(id => TimeFactory.CriarComId(id));
 
             config.NewConfig<TimeDocumento, Time>()
                     .MapWith(src => new Time(

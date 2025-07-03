@@ -4,7 +4,7 @@ using backend.Domain.Services;
 using backend.Domain.Services.IServices;
 using backend.Infra.Data;
 using backend.Infra.Data.Mongo.Mapping;
-using backend.Infra.Repositories;
+using backend.Infra.Data.Mongo.Repositories;
 using Mapster;
 using MapsterMapper;
 using Prometheus;
@@ -24,13 +24,16 @@ try
 
     builder.Services.AddSingleton(sp => new ContextoBancoMongo());
     builder.Services.AddScoped<ITimeRepository, TimeRepositoryMongo>();
+    builder.Services.AddScoped<ILojaRepository, LojaRepositoryMongo>();
     builder.Services.AddScoped<ITimeService, TimeService>();
     builder.Services.AddScoped<TimeApplicationService>();
+    builder.Services.AddScoped<LojaApplicationService>();
 
     builder.Services.AddMapster();
     builder.Services.AddSingleton(TypeAdapterConfig.GlobalSettings);
     builder.Services.AddScoped<IMapper, ServiceMapper>();
     new TimeDocumentoMapping().Register(TypeAdapterConfig.GlobalSettings);
+    new LojaDocumentoMapping().Register(TypeAdapterConfig.GlobalSettings);
 
     builder.Services.AddCors(options =>
     {

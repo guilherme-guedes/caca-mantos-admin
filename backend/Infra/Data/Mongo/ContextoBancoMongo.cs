@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using backend.Infra.Data.Documentos;
+using backend.Infra.Data.Mongo.Documentos;
 using MongoDB.Driver;
 
 namespace backend.Infra.Data
@@ -18,9 +19,12 @@ namespace backend.Infra.Data
 
             var client = new MongoClient(connectionString);
             _database = client.GetDatabase(databaseName);
-        }        
-        
+        }
+
         public IMongoCollection<TimeDocumento> Times =>
             _database.GetCollection<TimeDocumento>("times");
+            
+        public IMongoCollection<LojaDocumento> Lojas =>
+            _database.GetCollection<LojaDocumento>("lojas");
     }
 }
