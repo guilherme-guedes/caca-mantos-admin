@@ -6,3 +6,27 @@ nav {
     height: 35px;
     width: 35px;
 }
+
+.pagination li:not(:first-child):not(:last-child) > button {    
+    font-weight: 700;
+}
+
+.pagination li > button:hover {
+    color: #0d6efd;
+}
+
+.pagination li > button:disabled,
+.pagination li > .btn:disabled,
+.pagination li > .btn.disabled {
+    color: unset;
+    cursor: unset;
+    border: none!important;
+}
+
+.pagination li > button:active,
+.pagination li > .btn:active,
+.pagination li > .btn.active  {
+    color: #0c58c9;
+    border: none!important;
+}
+
