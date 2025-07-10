@@ -2,7 +2,7 @@ namespace backend.Domain.Model
 {
     public class Time
     {
-        public String id { get; private set; }
+        public Guid id { get; private set; }
         public String nome { get; private set; }
         public String identificador { get; private set; }
         public String nomeBusca { get; private set; }
@@ -12,7 +12,7 @@ namespace backend.Domain.Model
         public bool principal { get; private set; }
         public IList<Time> homonimos { get; private set; }
 
-        public Time(String id,
+        public Time(Guid id,
                     String nome = null,
                     String identificador = null,
                     String nomeBusca = null,

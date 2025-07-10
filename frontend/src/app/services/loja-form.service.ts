@@ -12,7 +12,7 @@ export class LojaFormService {
   criarForm(loja?: Partial<Loja>): FormGroup {
     return this.fb.group({
       id: [loja?.id],
-      nome: [loja?.nome || '', [Validators.required, Validators.minLength(5)]],
+      nome: [loja?.nome || '', [Validators.required, Validators.minLength(3)]],
       site: [loja?.site || '', [Validators.required, Validators.minLength(12)]],
       urlBusca: [loja?.urlBusca || '', [Validators.required, Validators.minLength(12)]],
       ativa: [loja?.ativa || true],

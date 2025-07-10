@@ -56,7 +56,7 @@ export class ListagemLojasComponent implements OnInit, OnDestroy{
 
   private carregarFiltro(){
     let filtro : FiltroLoja = {} as FiltroLoja;
-    Object.assign(filtro, this.formGroup);
+    Object.assign(filtro, this.formGroup.value);
     return filtro;
   }
   

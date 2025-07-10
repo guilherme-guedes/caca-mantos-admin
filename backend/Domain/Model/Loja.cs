@@ -2,7 +2,7 @@ namespace backend.Domain.Model
 {
     public class Loja
     {
-        public String id { get; private set; }
+        public Guid id { get; private set; }
         public String nome { get; private set; }
         public String site { get; private set; }
         public String urlBusca { get; private set; }
@@ -12,10 +12,10 @@ namespace backend.Domain.Model
 
         public Loja(String id)
         {
-            this.id = id;
+            this.id = Guid.Parse(id);
         }
 
-        public Loja(String id,
+        public Loja(Guid id,
                     String nome,
                     String site,
                     String urlBusca,

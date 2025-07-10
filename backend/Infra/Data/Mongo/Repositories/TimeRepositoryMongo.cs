@@ -20,9 +20,15 @@ namespace backend.Infra.Data.Mongo.Repositories
             _contexto = contexto;
         }
 
-        public Task<Time> Atualizar(Time time)
+        public async Task<Time> Atualizar(Time time)
         {
-            throw new NotImplementedException();
+            if (time is null)
+                throw new Exception($"Time sem dados informados");
+
+            var documentoAtualizado = time.Adapt<TimeDocumento>();
+            documentoAtualizado = await _contexto.Times.FindOneAndReplaceAsync(t => t.Id == time.id.ToString(), documentoAtualizado);
+
+            return documentoAtualizado.Adapt<Time>();
         }
 
         public async Task<PaginaDTO<Time>> Consultar(int pagina = 1,
@@ -51,13 +57,13 @@ namespace backend.Infra.Data.Mongo.Repositories
             }
 
             if (ativo.HasValue)
-                filter &= builder.Where(l => l.Ativo);                
+                filter &= builder.Where(l => l.Ativo == ativo.Value);                
                 
             if (destaque.HasValue)
-                filter &= builder.Where(l => l.Destaque);
+                filter &= builder.Where(l => l.Destaque == destaque.Value);
 
             if (principal.HasValue)
-                filter &= builder.Where(l => l.Principal);         
+                filter &= builder.Where(l => l.Principal == principal.Value);         
 
             var skip = (pagina - 1) * tamanhoPagina;
             var query = _contexto.Times.Find(filter).Sort(sort);
@@ -73,22 +79,37 @@ namespace backend.Infra.Data.Mongo.Repositories
                 itens: taskDocumentos.Result.Adapt<List<Time>>());
         }
 
-        public Task<Time> Criar(Time time)
+        public async Task<Time> Criar(Time time)
         {
-            throw new NotImplementedException();
+            if(time is null)
+                throw new Exception($"Time sem dados informados");
+
+            var timeExistente = await _contexto.Times.FindAsync(t => t.Nome.ToLowerInvariant() == time.nome.ToLowerInvariant());
+            if (timeExistente is not null)
+                throw new Exception($"Time com nome {time.nome} já existente");
+
+            timeExistente = await _contexto.Times.FindAsync(t => t.Identificador.ToLowerInvariant() == time.identificador.ToLowerInvariant());
+            if (timeExistente is not null)
+                throw new Exception($"Time com identificador {time.identificador} já existente");
+
+            var documentoTime = time.Adapt<TimeDocumento>();
+            await _contexto.Times.InsertOneAsync(documentoTime);
+
+            return documentoTime.Adapt<Time>();
         }
 
-        public Task<Time> Excluir(Time time)
+        public async Task<Boolean> Excluir(Guid id)
         {
-            throw new NotImplementedException();
+            var documento = await _contexto.Times.FindOneAndDeleteAsync(id.ToString());
+            return documento is not null;
         }
 
-        public async Task<Time> Obter(string id)
+        public async Task<Time> Obter(Guid id)
         {
-            _logger.LogDebug("Consultando time {id}...", id);
+            _logger.LogDebug("Consultando time {id}...", id.ToString());
 
             var builder = Builders<TimeDocumento>.Filter;
-            FilterDefinition<TimeDocumento> filter = builder.Where(x => x.Id == id);
+            FilterDefinition<TimeDocumento> filter = builder.Where(x => x.Id == id.ToString());
 
             var query = await _contexto.Times.FindAsync(filter);
 

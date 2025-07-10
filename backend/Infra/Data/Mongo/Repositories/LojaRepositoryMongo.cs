@@ -44,10 +44,10 @@ namespace backend.Infra.Data.Mongo.Repositories
             }
 
             if (ativa.HasValue)
-                filter &= builder.Where(l => l.Ativa);                
+                filter &= builder.Where(l => l.Ativa == ativa.Value);                
                 
             if (parceira.HasValue)
-                filter &= builder.Where(l => l.Parceira);               
+                filter &= builder.Where(l => l.Parceira == parceira.Value);               
             
             var skip = (pagina - 1) * tamanhoPagina;
             var query = _contexto.Lojas.Find(filter).Sort(sort);
@@ -63,12 +63,12 @@ namespace backend.Infra.Data.Mongo.Repositories
                 itens: taskDocumentos.Result.Adapt<List<Loja>>());
         }
 
-        public async Task<Loja> Obter(string id)
+        public async Task<Loja> Obter(Guid id)
         {
-            _logger.LogDebug("Consultando loja {id}...", id);
+            _logger.LogDebug("Consultando loja {id}...", id.ToString());
 
             var builder = Builders<LojaDocumento>.Filter;
-            FilterDefinition<LojaDocumento> filter = builder.Where(x => x.Id == id);
+            FilterDefinition<LojaDocumento> filter = builder.Where(x => x.Id == id.ToString());
 
             var query = await _contexto.Lojas.FindAsync(filter);
 
@@ -85,9 +85,10 @@ namespace backend.Infra.Data.Mongo.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Loja> Excluir(Loja loja)
+        public async Task<Boolean> Excluir(Guid id)
         {
-            throw new NotImplementedException();
+            var documento = await _contexto.Lojas.FindOneAndDeleteAsync(id.ToString());
+            return documento is not null;
         }
     }
 }

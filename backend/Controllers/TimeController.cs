@@ -19,7 +19,7 @@ namespace backend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Obter(string id)
         {
-            return Ok(await _timeApplicationService.Obter(id));
+            return Ok(await _timeApplicationService.Obter(Guid.Parse(id)));
         }
 
         [HttpGet]
@@ -30,7 +30,7 @@ namespace backend.Controllers
                                                     [FromQuery] bool? ativo,
                                                     [FromQuery] bool? principal)
         {
-            return Ok(await _timeApplicationService.Consultar(pagina, tamanhoPagina: quantidade, trecho, destaque, ativo, principal));
+            return Ok(await _timeApplicationService.Consultar(pagina, tamanhoPagina: quantidade, trecho: trecho, destaque: destaque, ativo: ativo, principal: principal));
         }
     }
 }

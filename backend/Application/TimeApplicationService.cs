@@ -28,9 +28,23 @@ namespace backend.Application
             return await _timeRepository.Consultar(pagina, tamanhoPagina, trecho, destaque, ativo, principal);
         }
 
-        public async Task<Time> Obter(string id)
+        public async Task<Time> Obter(Guid id)
         {
             return await _timeRepository.Obter(id);
+        }
+
+        public async Task<Time> Criar(Time time)
+        {
+            return await _timeRepository.Criar(time);
+        }
+        public async Task<Time> Atualizar(Time time)
+        {
+            return await _timeRepository.Atualizar(time);            
+        }
+        
+        public async Task<Boolean> Excluir(Guid id)
+        {
+            return await _timeRepository.Excluir(id);
         }
     }
 }

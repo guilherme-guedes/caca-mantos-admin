@@ -10,13 +10,13 @@ using Mapster;
 
 namespace backend.Infra.Data.Mongo.Mapping
 {
-    public class LojaDocumentoMapping: IRegister
+    public class LojaDocumentoMapping : IRegister
     {
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<LojaDocumento, Loja>()
                     .MapWith(src => new Loja(
-                        src.Id,
+                        Guid.Parse(src.Id),
                         src.Nome,
                         src.Site,
                         src.UrlBusca,

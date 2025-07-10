@@ -57,14 +57,14 @@ export class ListagemTimesComponent implements OnInit, OnDestroy{
   
   private carregarFiltros(){
       let filtro : FiltroTime = {} as FiltroTime;
-      Object.assign(filtro, this.form);
+      Object.assign(filtro, this.form.value);
       return filtro;
   }
   
   private consultarTimes(pagina: number) {
       var filtro = this.carregarFiltros();
 
-      this.timeService.consultar(pagina, this.TAMANHO_PAGINA, filtro.trecho, filtro.ativo, filtro.destaque, filtro.principal)
+      this.timeService.consultar(pagina, this.TAMANHO_PAGINA, filtro.trecho, filtro.destaque,  filtro.ativo, filtro.principal)
         .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
         .subscribe({
           next: (dadosPaginaLojas) => {
@@ -79,10 +79,7 @@ export class ListagemTimesComponent implements OnInit, OnDestroy{
 
   // Eventos
   onSubmit(item: any) {
-    if (this.form.valid) {
-      const filtro = Object.assign({}, this.form.value);      
-      this.consultarTimes(1);
-    }
+    this.consultarTimes(1);
   } 
   
   adicionarTime() {

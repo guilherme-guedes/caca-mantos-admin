@@ -18,7 +18,7 @@ namespace backend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Obter(string id)
         {
-            return Ok(await _lojaApplicationService.Obter(id));
+            return Ok(await _lojaApplicationService.Obter(Guid.Parse(id)));
         }
 
         [HttpGet]
@@ -26,9 +26,9 @@ namespace backend.Controllers
                                                     [FromQuery] int quantidade,
                                                     [FromQuery] string trecho,
                                                     [FromQuery] bool? parceira,
-                                                    [FromQuery] bool? ativo)
+                                                    [FromQuery] bool? ativa)
         {
-            return Ok(await _lojaApplicationService.Consultar(pagina, tamanhoPagina: quantidade, trecho, parceira, ativo));
+            return Ok(await _lojaApplicationService.Consultar(pagina, tamanhoPagina: quantidade, trecho: trecho, parceira: parceira, ativa: ativa));
         }        
     }
 }

@@ -7,8 +7,8 @@ namespace backend.Domain.IRepositories
     {
         public Task<Time> Criar(Time time);
         public Task<Time> Atualizar(Time time);
-        public Task<Time> Excluir(Time time);
-        public Task<Time> Obter(String id);
+        public Task<Boolean> Excluir(Guid id);
+        public Task<Time> Obter(Guid id);
         public Task<PaginaDTO<Time>> Consultar(
             int pagina = 1,
             int tamanhoPagina = 5,

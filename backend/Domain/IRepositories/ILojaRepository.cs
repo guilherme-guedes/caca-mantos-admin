@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using backend.Domain.Model;
 using backend.DTO;
 
@@ -11,8 +7,8 @@ namespace backend.Domain.IRepositories
     {        
         public Task<Loja> Criar(Loja loja);
         public Task<Loja> Atualizar(Loja loja);
-        public Task<Loja> Excluir(Loja loja);
-        public Task<Loja> Obter(String id);
+        public Task<Boolean> Excluir(Guid id);
+        public Task<Loja> Obter(Guid id);
         public Task<PaginaDTO<Loja>> Consultar(
             int pagina = 1,
             int tamanhoPagina = 5,

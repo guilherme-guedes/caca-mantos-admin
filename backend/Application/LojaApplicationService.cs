@@ -23,7 +23,7 @@ namespace backend.Application
             return await _lojaRepository.Consultar(pagina, tamanhoPagina, trecho, parceira, ativa);
         }
 
-        public async Task<Loja> Obter(string id)
+        public async Task<Loja> Obter(Guid id)
         {
             return await _lojaRepository.Obter(id);
         }
