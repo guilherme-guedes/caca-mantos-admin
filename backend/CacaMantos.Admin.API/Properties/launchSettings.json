@@ -1,0 +1,29 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5030",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "mongo__ConnectionString": "mongodb+srv://cacamantos-user:gdlmbjmGBAlUEsEH@cluster0.csffkvk.mongodb.net/",
+        "mongo__DatabaseName": "caca-camisas",
+        "postgres__ConnectionString": "Host=localhost;Port=5432;Database=cacamantos;Username=cacamantos;Password=251150"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7018;http://localhost:5030",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "mongo__ConnectionString": "mongodb+srv://cacamantos-user:gdlmbjmGBAlUEsEH@cluster0.csffkvk.mongodb.net/",
+        "mongo__DatabaseName": "caca-camisas",
+        "postgres__ConnectionString": "Host=localhost;Port=5432;Database=cacamantos;Username=cacamantos;Password=251150"
+      }
+    }
+  }
+}

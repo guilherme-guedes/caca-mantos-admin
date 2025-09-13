@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/CacaMantos.Admin.API.csproj",
+                "${workspaceFolder}/CacaMantos.Admin.API/CacaMantos.Admin.API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/CacaMantos.Admin.API.csproj",
+                "${workspaceFolder}/CacaMantos.Admin.API/CacaMantos.Admin.API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/CacaMantos.Admin.API.csproj"
+                "${workspaceFolder}/CacaMantos.Admin.API/CacaMantos.Admin.API.csproj"
             ],
             "problemMatcher": "$msCompile"
         },
@@ -44,7 +44,7 @@
             "args": [
                 "run",
                 "--project",
-                "${workspaceFolder}"
+                "${workspaceFolder}/CacaMantos.Admin.API"
             ],
             "problemMatcher": "$msCompile",
             "group": "build"
