@@ -76,6 +76,7 @@ namespace backend.Infra.Data.Repositories
             var taskLojas = queryPaginada.ToListAsync();
             var taskContador = query.CountAsync();
 
+// RESOLVER 
             await Task.WhenAll(taskLojas, taskContador);
 
             var totalRegistros = taskContador.Result;
