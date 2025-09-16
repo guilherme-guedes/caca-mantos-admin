@@ -70,9 +70,9 @@ namespace backend.Infra.Data.Repositories
                 query = query.Where(l => l.ativa == pesquisa.Ativo.Value);
 
             var lojaModels = await query.AsNoTracking()
+                                .OrderBy(l => l.nome)
                                 .Skip((pesquisa.Pagina - 1) * pesquisa.TamanhoPagina)
                                 .Take(pesquisa.TamanhoPagina)
-                                .OrderBy(l => l.nome)
                                 .ToListAsync();
                                 
             var totalRegistros = query.Count();
