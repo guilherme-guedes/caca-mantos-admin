@@ -5,9 +5,12 @@ using System.Text.RegularExpressions;
 namespace backend.Utils
 {
     public class StringUtils
-    {        
+    {
         public static string RemoverAcentos(string trecho)
         {
+            if (string.IsNullOrEmpty(trecho))
+                return string.Empty;
+
             var normalizedString = trecho.Normalize(NormalizationForm.FormD);
             var stringBuilder = new StringBuilder(capacity: normalizedString.Length);
 
@@ -23,8 +26,20 @@ namespace backend.Utils
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
-        
-        public static string SanitizarBusca(string trecho) =>
-            Regex.Replace(RemoverAcentos(trecho), @"(\s){2,}", " ");
+
+        public static string SanitizarTrechoBusca(string trecho) =>
+            ReduzirEspacos(RemoverAcentos(RemoverEspacosInicioFim(trecho)));
+
+        public static string ReduzirEspacos(string termo)
+        {
+            if (string.IsNullOrEmpty(termo)) return string.Empty;
+            return Regex.Replace(termo, @"(\s){2,}", " ");
+        }
+
+        public static string RemoverEspacosInicioFim(string termo)
+        {
+            if (string.IsNullOrEmpty(termo)) return string.Empty;
+            return Regex.Replace(termo, @"^\s+|\s+$", "");
+        }
     }
 }

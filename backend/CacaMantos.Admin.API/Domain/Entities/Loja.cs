@@ -2,13 +2,13 @@ namespace backend.Domain.Entities
 {
     public class Loja
     {
-        public Guid id { get; private set; }
-        public String nome { get; private set; }
-        public String site { get; private set; }
-        public String urlBusca { get; private set; }
-        public bool parceira { get; private set; }
-        public bool ativa { get; private set; }
-        public IList<Time> times { get; private set; }
+        public Guid Id { get; private set; }
+        public String Nome { get; private set; }
+        public String Site { get; private set; }
+        public String UrlBusca { get; private set; }
+        public bool Parceira { get; private set; }
+        public bool Ativa { get; private set; }
+        public IList<Time> Times { get; private set; }
 
         public Loja(Guid id,
                     String nome,
@@ -18,14 +18,13 @@ namespace backend.Domain.Entities
                     bool ativa = true,
                     IList<Time> times = null)
         {
-            this.id = id;
-            this.nome = nome;
-            this.site = site;
-            this.urlBusca = urlBusca;
-            this.parceira = parceira;
-            this.ativa = ativa;
-            this.times = times;
-        }
-        
+            this.Id = id;
+            this.Nome = nome;
+            this.Site = site;
+            this.UrlBusca = urlBusca;
+            this.Parceira = parceira;
+            this.Ativa = ativa;
+            this.Times = times;
+        }        
     }
 }
