@@ -70,17 +70,26 @@ namespace backend.Infra.Data.Repositories
             if (pesquisa.TemPrincipalInformado())
                 query = query.Where(t => t.principal == pesquisa.Principal.Value);
 
-            var timeModels = await query.AsNoTracking()
+            var queryPaginada = query.AsNoTracking()
                                 .OrderBy(t => t.nome)
                                 .Skip((pesquisa.Pagina - 1) * pesquisa.TamanhoPagina)
-                                .Take(pesquisa.TamanhoPagina)
-                                .ToListAsync();
-                                
-            var totalRegistros = query.Count();
+                                .Take(pesquisa.TamanhoPagina);
+                            
+            var taskTimes = queryPaginada.ToListAsync();
+            var taskContador = query.CountAsync();
+// RESOLVER 
 
-            var times = timeModels.Adapt<List<Time>>();
+            await Task.WhenAll(taskTimes, taskContador);
+
+            var totalRegistros = taskContador.Result;
+            var times = taskTimes.Result.Adapt<List<Time>>();
 
             return new PaginaDTO<Time>(pesquisa.Pagina, pesquisa.TamanhoPagina, totalRegistros, times);
+        }
+
+        public Task<int> ObterQuantidadeTimes()
+        {
+            return _context.Times.CountAsync();
         }
     }
 }

@@ -13,7 +13,6 @@ namespace backend.Infra.Data.Repositories
         {
         }
 
-
         public Task<Loja> Criar(Loja loja)
         {
             throw new NotImplementedException();
@@ -69,17 +68,25 @@ namespace backend.Infra.Data.Repositories
             if (pesquisa.TemAtivoInformado())
                 query = query.Where(l => l.ativa == pesquisa.Ativo.Value);
 
-            var lojaModels = await query.AsNoTracking()
+            var queryPaginada = query.AsNoTracking()
                                 .OrderBy(l => l.nome)
                                 .Skip((pesquisa.Pagina - 1) * pesquisa.TamanhoPagina)
-                                .Take(pesquisa.TamanhoPagina)
-                                .ToListAsync();
+                                .Take(pesquisa.TamanhoPagina);
                                 
-            var totalRegistros = query.Count();
+            var taskLojas = queryPaginada.ToListAsync();
+            var taskContador = query.CountAsync();
 
-            var lojas = lojaModels.Adapt<List<Loja>>();
+            await Task.WhenAll(taskLojas, taskContador);
+
+            var totalRegistros = taskContador.Result;
+            var lojas = taskLojas.Result.Adapt<List<Loja>>();
 
             return new PaginaDTO<Loja>(pesquisa.Pagina, pesquisa.TamanhoPagina, totalRegistros, lojas);
+        }
+
+        public Task<int> ObterQuantidadeLojas()
+        {
+            return _context.Lojas.CountAsync();
         }
     }
 }

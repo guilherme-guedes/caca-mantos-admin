@@ -13,6 +13,7 @@ import { PaginaMapperService } from '../../services/pagina-mapper.service';
 import { TimeTableService } from '../../services/time-table.service';
 import { LojaService } from '../../services/loja.service';
 import { LojaMapperService } from '../../services/loja-mapper.service';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'home-page',
@@ -27,21 +28,22 @@ export class HomeComponent implements OnInit, OnDestroy {
   carregando = false;
   times : Time[] = []; 
   lojas : Loja[] = []; 
+  quantidadeLojas: number = 0;
+  quantidadeTimes: number = 0;
   
   constructor(private readonly router: Router,
               private readonly lojaTableService: LojaTableService,
               private readonly timeTableService: TimeTableService,
               private readonly timeService: TimeService,
               private readonly lojaService: LojaService,
+              private readonly dashboardService: DashboardService,
               private readonly mapperTime: TimeMapperService,
               private readonly mapperLoja: LojaMapperService,
               private readonly mapperPagina: PaginaMapperService){
   }
   
   ngOnInit(): void {
-    this.carregando = true;
-    this.carregarTimes();
-    this.carregarLojas();
+    this.carregarDashboard();
   }
 
   private carregarTimes() {
@@ -70,6 +72,41 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.log("Erro: " + error);
         }
       });
+  }
+
+  private carregarQuantidadeLojas(){
+    this.dashboardService.obterQuantidadeLojas()
+          .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
+          .subscribe({
+            next: (dadosQuantidadeLojas) => {
+              this.quantidadeLojas = dadosQuantidadeLojas as number;
+            },
+            error: (error) => {
+              console.log("Erro: " + error);
+            }
+          });
+  }
+
+  private carregarQuantidadeTimes(){
+    this.dashboardService.obterQuantidadeLojas()
+          .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
+          .subscribe({
+            next: (dadosQuantidadeTimes) => {
+              this.quantidadeTimes = dadosQuantidadeTimes as number;
+            },
+            error: (error) => {
+              console.log("Erro: " + error);
+            }
+          });
+  }
+
+  private carregarDashboard(){
+    // Revisar loadings por dash (this carregando)    
+    this.carregando = true;
+    this.carregarTimes();
+    this.carregarLojas();
+    this.carregarQuantidadeLojas();
+    this.carregarQuantidadeTimes();
   }
 
   // Eventos  

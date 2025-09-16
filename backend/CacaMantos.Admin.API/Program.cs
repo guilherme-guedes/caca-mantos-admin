@@ -6,6 +6,9 @@ using backend.Infra.Data;
 using backend.Infra.Data.Mapping.Entities;
 using backend.Infra.Data.Repositories;
 using CacaMantos.Admin.API.Application.Mapping.ToDomain;
+using CacaMantos.Admin.API.Application.Services;
+using CacaMantos.Admin.API.Domain.Services;
+using CacaMantos.Admin.API.Domain.Services.IServices;
 using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +44,10 @@ namespace backend
 
                 builder.Services.AddScoped<ITimeService, TimeService>();
                 builder.Services.AddScoped<ILojaService, LojaService>();
+                builder.Services.AddScoped<IDashboardService, DashboardService>();
                 builder.Services.AddScoped<TimeApplicationService>();
                 builder.Services.AddScoped<LojaApplicationService>();
+                builder.Services.AddScoped<DashboardApplicationService>();
 
                 builder.Services.AddMapster();
                 builder.Services.AddSingleton(TypeAdapterConfig.GlobalSettings);
