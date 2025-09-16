@@ -1,11 +1,11 @@
 .switch-container-horizontal{
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-around;
     align-content: center;
     flex-wrap: wrap;
     flex-direction: row;
-    gap: 15px;
+    gap: 10px;
 }
 
 .switch-container-horizontal > .form-switch{

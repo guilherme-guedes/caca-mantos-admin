@@ -73,6 +73,7 @@ namespace backend.Infra.Data.Repositories
             var timeModels = await query.AsNoTracking()
                                 .Skip((pesquisa.Pagina - 1) * pesquisa.TamanhoPagina)
                                 .Take(pesquisa.TamanhoPagina)
+                                .OrderBy(t => t.nome)
                                 .ToListAsync();
                                 
             var totalRegistros = query.Count();

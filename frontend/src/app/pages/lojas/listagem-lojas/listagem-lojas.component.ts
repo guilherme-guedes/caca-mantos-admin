@@ -12,10 +12,12 @@ import { PaginaMapperService } from '../../../services/pagina-mapper.service';
 import { FiltroLoja } from '../../../models/dto/filtro-loja';
 import { PaginacaoComponent } from "../../../shared/components/paginacao/paginacao.component";
 import { Pagina } from '../../../models/dto/pagina';
+import { NullableBool } from '../../../shared/components/switch-three-states/switch-three-states.types';
+import { SwitchThreeStatesComponent } from '../../../shared/components/switch-three-states/switch-three-states.component';
 
 @Component({
   selector: 'app-listagem-lojas',
-  imports: [ReactiveFormsModule, TabelaDinamicaComponent, PaginacaoComponent],  
+  imports: [ReactiveFormsModule, TabelaDinamicaComponent, PaginacaoComponent, SwitchThreeStatesComponent, CommonModule],  
   templateUrl: './listagem-lojas.component.html',
   styleUrl: './listagem-lojas.component.css'
 })
@@ -49,8 +51,8 @@ export class ListagemLojasComponent implements OnInit, OnDestroy{
   private criarFormVazio() {
     return this.formBuilder.group({
       trecho: [''],
-      parceira: [],
-      ativa: []
+      parceira: null,
+      ativa: null
     });
   }  
 

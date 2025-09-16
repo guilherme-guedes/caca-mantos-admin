@@ -11,11 +11,12 @@ import { PaginaMapperService } from '../../../services/pagina-mapper.service';
 import { FiltroTime } from '../../../models/dto/filtro-time';
 import { PaginacaoComponent } from "../../../shared/components/paginacao/paginacao.component";
 import { Pagina } from '../../../models/dto/pagina';
-import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
+import { SwitchThreeStatesComponent } from '../../../shared/components/switch-three-states/switch-three-states.component';
+import { NullableBool } from '../../../shared/components/switch-three-states/switch-three-states.types';
 
 @Component({
   selector: 'app-listagem-times',
-  imports: [ReactiveFormsModule, TabelaDinamicaComponent, PaginacaoComponent],
+  imports: [ReactiveFormsModule, TabelaDinamicaComponent, PaginacaoComponent, SwitchThreeStatesComponent],
   templateUrl: './listagem-times.component.html',
   styleUrl: './listagem-times.component.css'
 })
@@ -49,9 +50,9 @@ export class ListagemTimesComponent implements OnInit, OnDestroy{
   private criarFormVazio() {
     return this.formBuilder.group({
       trecho: [''],
-      destaque: [false],
-      principal: [false],
-      ativo: [true]
+      destaque: null as NullableBool,
+      principal: null as NullableBool,
+      ativo: null as NullableBool
     });
   }  
   

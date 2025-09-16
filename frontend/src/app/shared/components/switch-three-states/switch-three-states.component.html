@@ -1,0 +1,26 @@
+<div>    
+    <small *ngIf="label" class="ms-2">
+       {{ label }}
+    </small>
+    <div class="form-check form-switch three-state-switch">
+        <div class="switch-wrapper" (click)="toggle()" [class.disabled]="disabled">
+            <div class="switch-track" 
+                [class.state-true]="value === true"
+                [class.state-false]="value === false"
+                [class.state-neutral]="value === null">
+                <div class="switch-thumb"></div>
+            </div>
+            <div class="state-labels">
+                <span class="label-false" [class.active]="value === false">✕</span>
+                <span class="label-neutral" [class.active]="value === null">−</span>
+                <span class="label-true" [class.active]="value === true">✓</span>
+            </div>
+        </div>
+        <!-- <label *ngIf="label" class="form-check-label ms-2" [for]="id">
+            {{ label }}
+        </label> -->
+    </div>
+    <small *ngIf="showStateText" class="text-muted ms-2">
+        {{ getStateText() }}
+    </small>
+</div>

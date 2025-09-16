@@ -1,16 +1,17 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Application.DTO
 {
     public class PesquisaPaginadaLojaRequest : PesquisaPaginadaRequest
     {   
-        [JsonPropertyName("trecho")]
+        [FromQuery(Name="trecho")]
         public string Trecho { get; set; }
 
-        [JsonPropertyName("parceira")]
+        [FromQuery(Name="parceira")]
         public bool? Parceira  { get; set; }
 
-        [JsonPropertyName("ativo")]
-        public bool? Ativo  { get; set; }
+        [FromQuery(Name="ativa")]
+        public bool? Ativa  { get; set; }
     }
 }

@@ -1,19 +1,20 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Application.DTO
 {
     public class PesquisaPaginadaTimeRequest : PesquisaPaginadaRequest
     {
-        [JsonPropertyName("trecho")]
+        [FromQuery(Name="trecho")]
         public string Trecho { get; set; }
 
-        [JsonPropertyName("destaque")]
+        [FromQuery(Name="destaque")]
         public bool? Destaque { get; set; }
 
-        [JsonPropertyName("ativo")]
+        [FromQuery(Name="ativo")]
         public bool? Ativo { get; set; }
 
-        [JsonPropertyName("principal")]
+        [FromQuery(Name="principal")]
         public bool? Principal { get; set; }  
     }
 }

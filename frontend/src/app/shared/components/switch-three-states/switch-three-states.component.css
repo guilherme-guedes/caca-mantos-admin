@@ -1,0 +1,126 @@
+.three-state-switch {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.switch-wrapper {
+    position: relative;
+    width: 80px;
+    height: 32px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.switch-wrapper.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.switch-track {
+    width: 100%;
+    height: 100%;
+    background-color: #dee2e6;
+    border-radius: 16px;
+    border: 2px solid #ced4da;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.switch-track.state-true {
+    background-color: #198754;
+    border-color: #146c43;
+}
+
+.switch-track.state-false {
+    background-color: #dc3545;
+    border-color: #b02a37;
+}
+
+.switch-track.state-neutral {
+    background-color: #6c757d;
+    border-color: #5c636a;
+}
+
+.switch-thumb {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    border-radius: 50%;
+    top: 2px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.switch-track.state-false .switch-thumb {
+    left: 2px;
+}
+
+.switch-track.state-neutral .switch-thumb {
+    left: 26px;
+}
+
+.switch-track.state-true .switch-thumb {
+    left: 50px;
+}
+
+.state-labels {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px;
+    pointer-events: none;
+}
+
+.state-labels span {
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    width: 16px;
+    text-align: center;
+}
+
+.state-labels span.active {
+    opacity: 1;
+}
+
+.switch-track.state-neutral .label-neutral {
+    color: white;
+}
+
+/* Responsivo */
+@media (max-width: 576px) {
+    .switch-wrapper {
+    width: 70px;
+    height: 28px;
+    }
+
+    .switch-thumb {
+    width: 20px;
+    height: 20px;
+    }
+
+    .switch-track.state-neutral .switch-thumb {
+    left: 23px;
+    }
+
+    .switch-track.state-true .switch-thumb {
+    left: 46px;
+    }
+
+    .state-labels {
+    padding: 0 4px;
+    }
+
+    .state-labels span {
+    font-size: 10px;
+    }
+}

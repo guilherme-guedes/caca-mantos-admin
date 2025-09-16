@@ -1,13 +1,14 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Application.DTO
 {
     public class PesquisaPaginadaRequest
     {        
-        [JsonPropertyName("pagina")]
+        [FromQuery(Name="pagina")]
         public int? Pagina { get; set; }
 
-        [JsonPropertyName("quantidade")]
+        [FromQuery(Name="quantidade")]
         public int? TamanhoPagina { get; set; }
     }
 }

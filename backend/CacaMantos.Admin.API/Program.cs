@@ -5,6 +5,7 @@ using backend.Domain.Services.IServices;
 using backend.Infra.Data;
 using backend.Infra.Data.Mapping.Entities;
 using backend.Infra.Data.Repositories;
+using CacaMantos.Admin.API.Application.Mapping.ToDomain;
 using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
@@ -87,6 +88,7 @@ namespace backend
 
             new TimeMap().Register(TypeAdapterConfig.GlobalSettings);
             new LojaMap().Register(TypeAdapterConfig.GlobalSettings);
+            new PesquisaDTOMappings().Register(TypeAdapterConfig.GlobalSettings);
         }
     }
 }
