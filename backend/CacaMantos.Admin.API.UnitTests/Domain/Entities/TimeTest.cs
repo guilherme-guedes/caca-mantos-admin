@@ -13,15 +13,15 @@ public class TimeTest
         var homonimos = new List<Time>();
         var time = new Time(id, "Nome", "Identificador", "NomeBusca", termos, true, false, true, homonimos);
 
-        time.id.ShouldBe(id);
-        time.nome.ShouldBe("Nome");
-        time.identificador.ShouldBe("Identificador");
-        time.nomeBusca.ShouldBe("NomeBusca");
-        time.termos.ShouldBe(termos);
-        time.destaque.ShouldBe(true);
-        time.ativo.ShouldBe(false);
-        time.principal.ShouldBe(true);
-        time.homonimos.ShouldBe(homonimos);
+        time.Id.ShouldBe(id);
+        time.Nome.ShouldBe("Nome");
+        time.Identificador.ShouldBe("Identificador");
+        time.NomeBusca.ShouldBe("NomeBusca");
+        time.Termos.ShouldBe(termos);
+        time.Destaque.ShouldBe(true);
+        time.Ativo.ShouldBe(false);
+        time.Principal.ShouldBe(true);
+        time.Homonimos.ShouldBe(homonimos);
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public class TimeTest
 
         time.AdicionarHomonimo(homonimo);
 
-        time.homonimos.ShouldContain(homonimo);
+        time.Homonimos.ShouldContain(homonimo);
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class TimeTest
         var time = new Time(Guid.NewGuid(), "Nome", "Identificador", "NomeBusca");
         time.AdicionarTermo("termo");
 
-        time.termos.ShouldContain("termo");
+        time.Termos.ShouldContain("termo");
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class TimeTest
         time.AdicionarTermo(null);
         time.AdicionarTermo("");
 
-        time.termos.ShouldBeNull();
+        time.Termos.ShouldBeNull();
     }
 
     [Fact]

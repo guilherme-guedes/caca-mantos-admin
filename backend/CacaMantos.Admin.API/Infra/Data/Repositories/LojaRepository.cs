@@ -4,6 +4,7 @@ using backend.Domain.Pesquisas;
 using backend.Common.DTO;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using backend.Infra.Data.Model;
 
 namespace backend.Infra.Data.Repositories
 {
@@ -13,14 +14,97 @@ namespace backend.Infra.Data.Repositories
         {
         }
 
-        public Task<Loja> Criar(Loja loja)
+        public async Task<Loja> Criar(Loja loja)
         {
-            throw new NotImplementedException();
+            if (loja == null)
+                throw new ArgumentNullException(nameof(loja));
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var lojaModel = loja.Adapt<LojaModel>();
+                await _context.Lojas.AddAsync(lojaModel);
+                await _context.SaveChangesAsync();
+
+                if (loja.Times.Any())
+                {
+                    var lojaTimesModel = loja.Times.Select(t => new LojaTimeModel
+                    {
+                        idLoja = lojaModel.id,
+                        idTime = t.Id
+                    }).ToList();
+
+                    await _context.LojasTimes.AddRangeAsync(lojaTimesModel);
+                }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return await ConsultarDadosLojaParaRetorno(lojaModel);
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
-        public Task<Loja> Atualizar(Loja loja)
+        public async Task<Loja> Atualizar(Loja loja)
         {
-            throw new NotImplementedException();
+            if (loja == null)
+                throw new ArgumentNullException(nameof(loja));
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var lojaExistente = await _context.Lojas.Include(l => l.times).FirstOrDefaultAsync(l => l.id == loja.Id);
+
+                if (lojaExistente == null)
+                    throw new KeyNotFoundException($"Loja com ID {loja.Id} não encontrada.");
+
+               var dadosAtualizados = loja.Adapt<LojaModel>();
+                _context.Entry(lojaExistente).CurrentValues.SetValues(dadosAtualizados);
+    
+                lojaExistente.times.Clear();                
+                if (loja.Times != null && loja.Times.Any())
+                {
+                    var idsTimes = loja.Times.Select(t => t.Id).ToList();
+                    var timesExistentes = await _context.Times.Where(t => idsTimes.Contains(t.id)).ToListAsync();
+                        
+                    foreach (var time in timesExistentes)
+                    {
+                        lojaExistente.times.Add(new LojaTimeModel
+                        {
+                            idLoja = lojaExistente.id,
+                            idTime = time.id,
+                            time = time
+                        });
+                    }
+                }
+
+                // if (loja.Times.Any())
+                // {
+                //     var novosTimes = loja.Times.Select(t => new LojaTimeModel
+                //     {
+                //         idLoja = loja.Id,
+                //         idTime = t.Id
+                //     }).ToList();
+
+                //     await _context.LojasTimes.AddRangeAsync(novosTimes);
+                // }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return await ConsultarDadosLojaParaRetorno(lojaExistente);
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<bool> Excluir(Guid id)
@@ -30,7 +114,7 @@ namespace backend.Infra.Data.Repositories
                 throw new KeyNotFoundException($"Loja com ID {id} não encontrada.");
 
             var removida = _context.Lojas.Remove(lojaModel) is not null;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return removida;
         }
 
@@ -45,10 +129,10 @@ namespace backend.Infra.Data.Repositories
 
             return lojaModel.Adapt<Loja>();
         }
-        
+
         public async Task<PaginaDTO<Loja>> Consultar(PesquisaPaginadaLoja pesquisa)
         {
-            if(pesquisa is null)
+            if (pesquisa is null)
                 return PaginaDTO<Loja>.Vazia(1, 5);
 
             var query = _context.Lojas.AsQueryable();
@@ -84,6 +168,16 @@ namespace backend.Infra.Data.Repositories
         public Task<int> ObterQuantidadeLojas()
         {
             return _context.Lojas.CountAsync();
+        }
+        
+        private async Task<Loja> ConsultarDadosLojaParaRetorno(LojaModel loja)
+        {
+            var lojaComTimes = await _context.Lojas
+                                    .Include(l => l.times)
+                                    .Include("times.time")
+                                    .AsNoTracking().FirstOrDefaultAsync(l => l.id == loja.id);
+
+            return lojaComTimes.Adapt<Loja>();
         }
     }
 }

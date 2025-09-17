@@ -24,7 +24,7 @@ namespace backend.Domain.Entities
             this.UrlBusca = urlBusca;
             this.Parceira = parceira;
             this.Ativa = ativa;
-            this.Times = times;
+            this.Times = times ?? new List<Time>();
         }        
     }
 }

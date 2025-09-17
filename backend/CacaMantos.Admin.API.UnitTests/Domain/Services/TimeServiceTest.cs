@@ -48,8 +48,8 @@ namespace CacaMantos.Admin.API.UnitTests.Domain.Services
             var resultado = await service.Obter(id);
 
             resultado.ShouldBe(time);
-            resultado.id.ShouldBe(id);
-            resultado.nome.ShouldBe("Nome");
+            resultado.Id.ShouldBe(id);
+            resultado.Nome.ShouldBe("Nome");
         }
     }
 }

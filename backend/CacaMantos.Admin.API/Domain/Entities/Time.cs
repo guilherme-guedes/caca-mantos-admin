@@ -2,15 +2,16 @@ namespace backend.Domain.Entities
 {
     public class Time
     {
-        public Guid id { get; private set; }
-        public String nome { get; private set; }
-        public String identificador { get; private set; }
-        public String nomeBusca { get; private set; }
-        public IList<String> termos { get; private set; }
-        public bool destaque { get; private set; }
-        public bool ativo { get; private set; }
-        public bool principal { get; private set; }
-        public IList<Time> homonimos { get; private set; }
+        public Guid Id { get; private set; }
+        public String Nome { get; private set; }
+        public String Identificador { get; private set; }
+        public String NomeBusca { get; private set; }
+        public IList<String> Termos { get; private set; }
+        public bool Destaque { get; private set; }
+        public bool Ativo { get; private set; }
+        public bool Principal { get; private set; }
+        public IList<Time> Homonimos { get; private set; }
+        public Time TimePrincipal { get; private set; }
 
         public Time(Guid id,
                     String nome,
@@ -20,31 +21,33 @@ namespace backend.Domain.Entities
                     bool destaque = false,
                     bool ativo = true,
                     bool principal = true,
-                    IList<Time> homonimos = null)
+                    IList<Time> homonimos = null,
+                    Time timePrincipal = null)
         {
-            this.id = id;
-            this.nome = nome;
-            this.identificador = identificador;
-            this.nomeBusca = nomeBusca;
-            this.termos = termos;
-            this.destaque = destaque;
-            this.ativo = ativo;
-            this.principal = principal;
-            this.homonimos = homonimos;
+            this.Id = id;
+            this.Nome = nome;
+            this.Identificador = identificador;
+            this.NomeBusca = nomeBusca;
+            this.Termos = termos;
+            this.Destaque = destaque;
+            this.Ativo = ativo;
+            this.Principal = principal;
+            this.Homonimos = homonimos;
+            this.TimePrincipal = timePrincipal;
         }
 
         public void AdicionarHomonimo(Time homonimo)
         {
-            if (!this.principal)
+            if (!this.Principal)
                 throw new InvalidOperationException("Não é possível adicionar times homônimos a um time que não é principal.");
 
             if (homonimo == null)
                 throw new ArgumentNullException(nameof(homonimo));
 
-            if (homonimos == null)
-                homonimos = new List<Time>();
+            if (Homonimos == null)
+                Homonimos = new List<Time>();
 
-            homonimos.Add(homonimo);
+            Homonimos.Add(homonimo);
         }
 
         public void AdicionarTermo(String termo)
@@ -52,14 +55,16 @@ namespace backend.Domain.Entities
             if (String.IsNullOrEmpty(termo))
                 return;
 
-            if (termos == null)
-                termos = new List<String>();
+            if (Termos == null)
+                Termos = new List<String>();
 
-            termos.Add(termo);
+            Termos.Add(termo);
         }
         
-        public bool TemTimesHomonimos() =>  homonimos?.Count > 0;  
+        public bool TemTimesHomonimos() =>  Homonimos?.Count > 0;  
               
-        public bool TemTermos() => termos?.Count > 0;        
+        public bool TemTimePrincipal() => TimePrincipal != null;
+        
+        public bool TemTermos() => Termos?.Count > 0;        
     }
 }

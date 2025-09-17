@@ -4,23 +4,90 @@ using backend.Domain.Pesquisas;
 using backend.Common.DTO;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using backend.Infra.Data.Model;
 
 namespace backend.Infra.Data.Repositories
 {
-    public class TimeRepository  : BaseRepository, ITimeRepository
+    public class TimeRepository : BaseRepository, ITimeRepository
     {
         public TimeRepository(ContextoBanco context) : base(context)
         {
         }
 
-        public Task<Time> Criar(Time time)
+        public async Task<Time> Criar(Time time)
         {
-            throw new NotImplementedException();
+            if (time == null)
+                throw new ArgumentNullException(nameof(time));
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var timeModel = time.Adapt<TimeModel>();
+
+                // if (time.TemTimePrincipal())
+                //     timeModel.timePrincipalId = time.TimePrincipal.Id;
+
+                await _context.Times.AddAsync(timeModel);
+                await _context.SaveChangesAsync();
+
+                if (time.TemTimesHomonimos())
+                {
+                    var timesHomonimos = _context.Times.Where(t => time.Homonimos.Select(th => th.Id).Contains(t.id)).ToList();
+                    timesHomonimos.ForEach(th => th.timePrincipalId = time.Id);
+                }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return await ConsultarDadosTimeParaRetorno(time);
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
-        public Task<Time> Atualizar(Time time)
+        public async Task<Time> Atualizar(Time time)
         {
-            throw new NotImplementedException();
+            if (time == null)
+                throw new ArgumentNullException(nameof(time));
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var timeModel = await _context.Times
+                    .Include(t => t.homonimos)
+                    .FirstOrDefaultAsync(t => t.id == time.Id);
+
+                if (timeModel == null)
+                    throw new KeyNotFoundException($"Time com ID {time.Id} não encontrado.");
+
+                time.Adapt(timeModel);
+
+                // if (time.TemTimePrincipal())
+                //     timeModel.timePrincipalId = time.TimePrincipal.Id;
+
+                _context.Times.Update(timeModel);
+
+                if (time.TemTimesHomonimos())
+                {
+                    var timesHomonimos = _context.Times.Where(t => time.Homonimos.Select(th => th.Id).Contains(t.id)).ToList();
+                    timesHomonimos.ForEach(th => th.timePrincipalId = time.Id);
+                }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return await ConsultarDadosTimeParaRetorno(time);
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task<bool> Excluir(Guid id)
@@ -86,6 +153,16 @@ namespace backend.Infra.Data.Repositories
         public Task<int> ObterQuantidadeTimes()
         {
             return _context.Times.CountAsync();
+        }        
+
+        private async Task<Time> ConsultarDadosTimeParaRetorno(Time time)
+        {
+            var timeModelComHomonimos = await _context.Times
+                                .Include(t => t.homonimos)
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync(t => t.id == time.Id);
+
+            return timeModelComHomonimos.Adapt<Time>();
         }
     }
 }

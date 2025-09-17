@@ -17,6 +17,7 @@ namespace backend.Domain.Services
 
         public async Task<Loja> Atualizar(Loja loja)
         {
+            // Implementar validações de negócio aqui
             return await _lojaRepository.Atualizar(loja);
         }
 
@@ -27,6 +28,7 @@ namespace backend.Domain.Services
 
         public async Task<Loja> Criar(Loja loja)
         {
+            // Implementar validações de negócio aqui
             return await _lojaRepository.Criar(loja);
         }
 

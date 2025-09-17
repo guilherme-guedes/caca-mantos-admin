@@ -17,6 +17,7 @@ namespace backend.Domain.Services
 
         public async Task<Time> Atualizar(Time time)
         {
+            // Implementar validações de negócio aqui
             return await _timeRepository.Atualizar(time);
         }
 
@@ -27,6 +28,7 @@ namespace backend.Domain.Services
 
         public async Task<Time> Criar(Time time)
         {
+            // Implementar validações de negócio aqui
             return await _timeRepository.Criar(time);
         }
 
