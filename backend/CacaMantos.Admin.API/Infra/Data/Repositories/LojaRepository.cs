@@ -72,15 +72,11 @@ namespace backend.Infra.Data.Repositories
                                 .OrderBy(l => l.nome)
                                 .Skip((pesquisa.Pagina - 1) * pesquisa.TamanhoPagina)
                                 .Take(pesquisa.TamanhoPagina);
-                                
-            var taskLojas = queryPaginada.ToListAsync();
-            var taskContador = query.CountAsync();
 
-// RESOLVER 
-            await Task.WhenAll(taskLojas, taskContador);
+            var lojasModel = await queryPaginada.ToListAsync();
+            var totalRegistros = await query.CountAsync();
 
-            var totalRegistros = taskContador.Result;
-            var lojas = taskLojas.Result.Adapt<List<Loja>>();
+            var lojas = lojasModel.Adapt<List<Loja>>();
 
             return new PaginaDTO<Loja>(pesquisa.Pagina, pesquisa.TamanhoPagina, totalRegistros, lojas);
         }

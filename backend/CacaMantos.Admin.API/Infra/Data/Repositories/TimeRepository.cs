@@ -47,7 +47,7 @@ namespace backend.Infra.Data.Repositories
 
         public async Task<PaginaDTO<Time>> Consultar(PesquisaPaginadaTime pesquisa)
         {
-            if(pesquisa is null)
+            if (pesquisa is null)
                 return PaginaDTO<Time>.Vazia(1, 5);
 
             var query = _context.Times.AsQueryable();
@@ -74,15 +74,11 @@ namespace backend.Infra.Data.Repositories
                                 .OrderBy(t => t.nome)
                                 .Skip((pesquisa.Pagina - 1) * pesquisa.TamanhoPagina)
                                 .Take(pesquisa.TamanhoPagina);
-                            
-            var taskTimes = queryPaginada.ToListAsync();
-            var taskContador = query.CountAsync();
-// RESOLVER 
 
-            await Task.WhenAll(taskTimes, taskContador);
+            var timesModel = await queryPaginada.ToListAsync();
+            var totalRegistros = await query.CountAsync();
 
-            var totalRegistros = taskContador.Result;
-            var times = taskTimes.Result.Adapt<List<Time>>();
+            var times = timesModel.Adapt<List<Time>>();
 
             return new PaginaDTO<Time>(pesquisa.Pagina, pesquisa.TamanhoPagina, totalRegistros, times);
         }
