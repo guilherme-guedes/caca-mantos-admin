@@ -18,13 +18,13 @@ namespace CacaMantos.Admin.API.Presentation.Controllers
         [HttpGet("quantidade-lojas")]
         public async Task<IActionResult> ObterQuantidadeLojas()
         {
-            return Ok(await _dashboardService.ConsultarQuantidadeLojas());
+            return Ok(await _dashboardService.ObterQuantidadeLojas());
         }
 
         [HttpGet("quantidade-times")]
         public async Task<IActionResult> ObterQuantidadeTimes()
         {
-            return Ok(await _dashboardService.ConsultarQuantidadeTimes());
+            return Ok(await _dashboardService.ObterQuantidadeTimes());
         }
     }
 }

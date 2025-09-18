@@ -12,5 +12,6 @@ namespace backend.Domain.IRepositories
         public Task<Time> Obter(Guid id);
         public Task<PaginaDTO<Time>> Consultar(PesquisaPaginadaTime pesquisa);
         public Task<int> ObterQuantidadeTimes();
+        public Task<List<Time>> Consultar(IList<Guid> ids);
     }
 }

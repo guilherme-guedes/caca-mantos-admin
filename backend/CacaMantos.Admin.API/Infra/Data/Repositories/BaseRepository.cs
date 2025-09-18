@@ -7,6 +7,6 @@ namespace backend.Infra.Data.Repositories
         public BaseRepository(ContextoBanco context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context), "Contexto do banco não pode ser nulo.");
-        }
+        }        
     }
 }

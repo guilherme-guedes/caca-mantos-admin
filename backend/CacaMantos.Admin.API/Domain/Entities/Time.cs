@@ -1,8 +1,9 @@
+using CacaMantos.Admin.API.Domain.Entities;
+
 namespace backend.Domain.Entities
 {
-    public class Time
+    public class Time :  EntidadeBase
     {
-        public Guid Id { get; private set; }
         public String Nome { get; private set; }
         public String Identificador { get; private set; }
         public String NomeBusca { get; private set; }
@@ -24,6 +25,11 @@ namespace backend.Domain.Entities
                     IList<Time> homonimos = null,
                     Time timePrincipal = null)
         {
+            if(principal && timePrincipal != null)
+                throw new InvalidOperationException("Não é possível definir um time principal para um time que é principal.");
+            if(!principal && homonimos != null && homonimos.Count > 0)
+                throw new InvalidOperationException("Não é possível adicionar times homônimos a um time que não é principal.");
+                
             this.Id = id;
             this.Nome = nome;
             this.Identificador = identificador;
@@ -36,13 +42,37 @@ namespace backend.Domain.Entities
             this.TimePrincipal = timePrincipal;
         }
 
+        public void AlterarTimePrincipal(Time timePrincipal)
+        {
+            if (this.Principal)
+                throw new InvalidOperationException("Não é possível definir um time principal para um time que é principal.");
+
+            this.TimePrincipal = timePrincipal;
+            this.Homonimos.Clear();
+        }
+
+        public void AlterarTimesHomonimos(IList<Time> homonimos)
+        {
+            if( homonimos == null || homonimos.Count == 0)
+            {
+                this.Homonimos = new List<Time>();
+                return;
+            }
+
+            if (!this.Principal)
+                throw new InvalidOperationException("Não é possível adicionar times homônimos a um time que não é principal.");
+
+            this.Homonimos = homonimos;
+            this.TimePrincipal = null;
+        }
+
         public void AdicionarHomonimo(Time homonimo)
         {
             if (!this.Principal)
                 throw new InvalidOperationException("Não é possível adicionar times homônimos a um time que não é principal.");
 
             if (homonimo == null)
-                throw new ArgumentNullException(nameof(homonimo));
+                throw new ArgumentNullException("Time homônimo não informado", nameof(homonimo));
 
             if (Homonimos == null)
                 Homonimos = new List<Time>();

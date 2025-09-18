@@ -5,13 +5,17 @@ using backend.Common.DTO;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Infra.Data.Helper;
 
 namespace backend.Infra.Data.Repositories
 {
     public class TimeRepository : BaseRepository, ITimeRepository
     {
-        public TimeRepository(ContextoBanco context) : base(context)
+        private readonly IRepositorioUtils utils;
+
+        public TimeRepository(ContextoBanco context, IRepositorioUtils utils) : base(context)
         {
+            this.utils = utils;
         }
 
         public async Task<Time> Criar(Time time)
@@ -153,7 +157,13 @@ namespace backend.Infra.Data.Repositories
         public Task<int> ObterQuantidadeTimes()
         {
             return _context.Times.CountAsync();
-        }        
+        }
+
+        public async Task<List<Time>> Consultar(IList<Guid> ids)
+        {
+            var times = await this.utils.CarregarDadosDeIds(_context.Times, ids);
+            return times.Adapt<List<Time>>();
+        }
 
         private async Task<Time> ConsultarDadosTimeParaRetorno(Time time)
         {

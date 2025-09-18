@@ -5,13 +5,17 @@ using backend.Common.DTO;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Infra.Data.Helper;
 
 namespace backend.Infra.Data.Repositories
 {
     public class LojaRepository : BaseRepository, ILojaRepository
     {
-        public LojaRepository(ContextoBanco context) : base(context)
+        private readonly IRepositorioUtils utils;
+        
+        public LojaRepository(ContextoBanco context, IRepositorioUtils utils) : base(context)
         {
+            this.utils = utils;
         }
 
         public async Task<Loja> Criar(Loja loja)
@@ -29,6 +33,11 @@ namespace backend.Infra.Data.Repositories
 
                 if (loja.Times.Any())
                 {
+                    var timesExistentes = await this.utils.CarregarDadosDeIds(_context.Times, [.. loja.Times.Select(t => t.Id)]);
+
+                    if(timesExistentes.Count != loja.Times.Count)
+                        throw new KeyNotFoundException("Um ou mais times informados não foram encontrados.");
+
                     var lojaTimesModel = loja.Times.Select(t => new LojaTimeModel
                     {
                         idLoja = lojaModel.id,
@@ -67,12 +76,15 @@ namespace backend.Infra.Data.Repositories
                var dadosAtualizados = loja.Adapt<LojaModel>();
                 _context.Entry(lojaExistente).CurrentValues.SetValues(dadosAtualizados);
     
-                lojaExistente.times.Clear();                
-                if (loja.Times != null && loja.Times.Any())
+                lojaExistente.times.Clear();             
+
+                if (loja.Times.Any())
                 {
-                    var idsTimes = loja.Times.Select(t => t.Id).ToList();
-                    var timesExistentes = await _context.Times.Where(t => idsTimes.Contains(t.id)).ToListAsync();
-                        
+                    var timesExistentes = await this.utils.CarregarDadosDeIds(_context.Times, [.. loja.Times.Select(t => t.Id)]);
+
+                    if(timesExistentes.Count != loja.Times.Count)
+                        throw new KeyNotFoundException("Um ou mais times informados não foram encontrados.");
+
                     foreach (var time in timesExistentes)
                     {
                         lojaExistente.times.Add(new LojaTimeModel
@@ -83,17 +95,6 @@ namespace backend.Infra.Data.Repositories
                         });
                     }
                 }
-
-                // if (loja.Times.Any())
-                // {
-                //     var novosTimes = loja.Times.Select(t => new LojaTimeModel
-                //     {
-                //         idLoja = loja.Id,
-                //         idTime = t.Id
-                //     }).ToList();
-
-                //     await _context.LojasTimes.AddRangeAsync(novosTimes);
-                // }
 
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();

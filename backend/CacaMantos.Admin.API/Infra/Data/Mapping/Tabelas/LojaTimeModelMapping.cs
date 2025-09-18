@@ -2,7 +2,7 @@ using backend.Infra.Data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace backend.Infra.Data.Mapping
+namespace backend.Infra.Data.Mapping.Tabelas
 {
     public class LojaTimeModelMapping: IEntityTypeConfiguration<LojaTimeModel>
     {

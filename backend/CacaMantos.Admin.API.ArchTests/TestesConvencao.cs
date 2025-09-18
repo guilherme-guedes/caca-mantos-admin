@@ -81,7 +81,9 @@ namespace CacaMantos.Admin.API.ArchTests
                 .That()
                 .ResideInNamespace("backend.Utils")
                 .Should()
-                .HaveNameEndingWith("Utils");
+                .HaveNameEndingWith("Utils")
+                .OrShould()
+                .HaveNameEndingWith("Extensions");
 
             rule.Check(Architecture);
         }

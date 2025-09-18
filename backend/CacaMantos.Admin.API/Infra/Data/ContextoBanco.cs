@@ -5,9 +5,9 @@ namespace backend.Infra.Data
 {
     public class ContextoBanco : DbContext
     {
-        public DbSet<TimeModel> Times {get;set;}
-        public DbSet<LojaModel> Lojas {get;set;}
-        public DbSet<LojaTimeModel> LojasTimes {get;set;}
+        public DbSet<TimeModel> Times { get; set; }
+        public DbSet<LojaModel> Lojas { get; set; }
+        public DbSet<LojaTimeModel> LojasTimes { get; set; }
 
         public ContextoBanco(DbContextOptions<ContextoBanco> options)
             : base(options)

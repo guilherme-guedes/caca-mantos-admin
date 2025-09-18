@@ -1,14 +1,11 @@
 using backend.Application.Services;
 using backend.Domain.IRepositories;
-using backend.Domain.Services;
-using backend.Domain.Services.IServices;
 using backend.Infra.Data;
 using backend.Infra.Data.Mapping.Entities;
 using backend.Infra.Data.Repositories;
 using CacaMantos.Admin.API.Application.Mapping.ToDomain;
 using CacaMantos.Admin.API.Application.Services;
-using CacaMantos.Admin.API.Domain.Services;
-using CacaMantos.Admin.API.Domain.Services.IServices;
+using CacaMantos.Admin.API.Infra.Data.Helper;
 using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
@@ -41,17 +38,8 @@ namespace backend
                 builder.Host.UseSerilog();
 
                 RegistrarInfraestrutura(builder);
-
-                builder.Services.AddScoped<ITimeService, TimeService>();
-                builder.Services.AddScoped<ILojaService, LojaService>();
-                builder.Services.AddScoped<IDashboardService, DashboardService>();
-                builder.Services.AddScoped<TimeApplicationService>();
-                builder.Services.AddScoped<LojaApplicationService>();
-                builder.Services.AddScoped<DashboardApplicationService>();
-
-                builder.Services.AddMapster();
-                builder.Services.AddSingleton(TypeAdapterConfig.GlobalSettings);
-                builder.Services.AddScoped<IMapper, ServiceMapper>();
+                RegistrarAplicacao(builder);
+                RegistrarMappers(builder);
 
                 builder.Services.AddCors(options =>
                 {
@@ -85,9 +73,25 @@ namespace backend
             }
         }
 
+        private static void RegistrarMappers(WebApplicationBuilder builder)
+        {
+            builder.Services.AddMapster();
+            builder.Services.AddSingleton(TypeAdapterConfig.GlobalSettings);
+            builder.Services.AddScoped<IMapper, ServiceMapper>();
+        }
+
+        private static void RegistrarAplicacao(WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<TimeApplicationService>();
+            builder.Services.AddScoped<LojaApplicationService>();
+            builder.Services.AddScoped<DashboardApplicationService>();
+        }
+
         private static void RegistrarInfraestrutura(WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<ContextoBanco>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("BancoDados")));
+
+            builder.Services.AddScoped<IRepositorioUtils, RepositorioUtils>();
             builder.Services.AddScoped<ILojaRepository, LojaRepository>();
             builder.Services.AddScoped<ITimeRepository, TimeRepository>();
 

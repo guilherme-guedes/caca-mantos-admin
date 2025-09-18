@@ -1,24 +1,28 @@
-using CacaMantos.Admin.API.Domain.Services.IServices;
+using backend.Domain.IRepositories;
 
 namespace CacaMantos.Admin.API.Application.Services
 {
     public class DashboardApplicationService
     {
-        private readonly IDashboardService _dashboardService;
+        private readonly ILojaRepository _lojaRepository;
+        private readonly ITimeRepository _timeRepository;
 
-        public DashboardApplicationService(IDashboardService dashboardService)
+        public DashboardApplicationService(
+            ILojaRepository lojaRepository,
+            ITimeRepository timeRepository)
         {
-            _dashboardService = dashboardService;
+            _lojaRepository = lojaRepository;
+            _timeRepository = timeRepository;
         }
 
-        public async Task<int> ConsultarQuantidadeLojas()
+        public Task<int> ObterQuantidadeLojas()
         {
-            return await _dashboardService.ObterQuantidadeLojas();
-        }        
+            return _lojaRepository.ObterQuantidadeLojas();
+        }
 
-        public async Task<int> ConsultarQuantidadeTimes()
+        public Task<int> ObterQuantidadeTimes()
         {
-            return await _dashboardService.ObterQuantidadeTimes();
+            return _timeRepository.ObterQuantidadeTimes();
         }
     }
 }
