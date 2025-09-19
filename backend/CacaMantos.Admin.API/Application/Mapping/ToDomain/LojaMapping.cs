@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using backend.Domain.Entities;
 using CacaMantos.Admin.API.Application.DTO;
 using Mapster;
@@ -32,6 +28,17 @@ namespace CacaMantos.Admin.API.Application.Mapping.ToDomain
                         src.Parceira,
                         src.Ativa,
                         null
+                    ));
+
+            config.NewConfig<Loja, LojaResponse>()
+                    .MapWith(src => new LojaResponse(
+                        src.Id.ToString(),
+                        src.Nome,
+                        src.Site,
+                        src.UrlBusca,
+                        src.Parceira,
+                        src.Ativa,
+                        src.Times.Adapt<IList<TimeResumidoDTO>>()
                     ));
         }
     }

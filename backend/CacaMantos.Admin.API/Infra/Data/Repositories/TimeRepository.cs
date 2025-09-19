@@ -29,8 +29,8 @@ namespace backend.Infra.Data.Repositories
             {
                 var timeModel = time.Adapt<TimeModel>();
 
-                // if (time.TemTimePrincipal())
-                //     timeModel.timePrincipalId = time.TimePrincipal.Id;
+                if (time.TemTimePrincipal())
+                    timeModel.timePrincipalId = time.TimePrincipal.Id;
 
                 await _context.Times.AddAsync(timeModel);
                 await _context.SaveChangesAsync();
@@ -64,6 +64,7 @@ namespace backend.Infra.Data.Repositories
             {
                 var timeModel = await _context.Times
                     .Include(t => t.homonimos)
+                    .Include(l => l.timePrincipal)
                     .FirstOrDefaultAsync(t => t.id == time.Id);
 
                 if (timeModel == null)
@@ -71,8 +72,8 @@ namespace backend.Infra.Data.Repositories
 
                 time.Adapt(timeModel);
 
-                // if (time.TemTimePrincipal())
-                //     timeModel.timePrincipalId = time.TimePrincipal.Id;
+                if (time.TemTimePrincipal())
+                    timeModel.timePrincipalId = time.TimePrincipal.Id;
 
                 _context.Times.Update(timeModel);
 
@@ -109,6 +110,7 @@ namespace backend.Infra.Data.Repositories
         {
             var timeModel = await _context.Times
                                     .Include(l => l.homonimos)
+                                    .Include(l => l.timePrincipal)
                                     .AsNoTracking().FirstOrDefaultAsync(l => l.id == id);
             if (timeModel is null)
                 throw new KeyNotFoundException($"Time com ID {id} não encontrado.");

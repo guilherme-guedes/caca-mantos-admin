@@ -1,5 +1,6 @@
 using backend.Domain.Entities;
 using CacaMantos.Admin.API.Application.DTO;
+using CacaMantos.Admin.API.Application.DTO.Responses;
 using Mapster;
 
 namespace CacaMantos.Admin.API.Application.Mapping.ToDomain
@@ -35,7 +36,40 @@ namespace CacaMantos.Admin.API.Application.Mapping.ToDomain
                         null,
                         null
                     ));
-        }
-        
+
+            config.NewConfig<Time, TimeResumidoDTO>()
+                    .MapWith(src => new TimeResumidoDTO(
+                        src.Id.ToString(),
+                        src.Identificador
+                    ));
+
+            config.NewConfig<Time, TimeResponse>()
+                    .MapWith(src => new TimeResponse(
+                        src.Id.ToString(),
+                        src.Nome,
+                        src.Identificador,
+                        src.NomeBusca,
+                        src.Termos,
+                        src.Destaque,
+                        src.Ativo,
+                        src.Principal,
+                        src.Homonimos != null ? src.Homonimos.Adapt<IList<TimeResumidoDTO>>() : null,
+                        src.TimePrincipal != null ? src.TimePrincipal.Adapt<TimeResumidoDTO>() : null
+                    ));                    
+                    
+            config.NewConfig<Time, TimeResponse>()
+                    .MapWith(src => new TimeResponse(
+                        src.Id.ToString(),
+                        src.Nome,
+                        src.Identificador,
+                        src.NomeBusca,
+                        src.Termos,
+                        src.Destaque,
+                        src.Ativo,
+                        src.Principal,
+                        src.Homonimos != null ? src.Homonimos.Adapt<IList<TimeResumidoDTO>>() : null,
+                        src.TimePrincipal != null ? src.TimePrincipal.Adapt<TimeResumidoDTO>() : null
+                    ));
+        }        
     }
 }

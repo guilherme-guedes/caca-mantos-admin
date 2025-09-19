@@ -1,3 +1,5 @@
+import { TimeResumido } from "./dto/time-resumido";
+
 export interface Loja {
   id: string;
   nome: string;
@@ -5,5 +7,5 @@ export interface Loja {
   urlBusca: string;
   parceira: boolean;
   ativa: boolean;
-  times: string[];
+  times: TimeResumido[];
 }

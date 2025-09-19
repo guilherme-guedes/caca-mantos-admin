@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private carregarQuantidadeTimes(){
-    this.dashboardService.obterQuantidadeLojas()
+    this.dashboardService.obterQuantidadeTimes()
           .pipe(takeUntil(this.destroy$), finalize(() => this.carregando = false))
           .subscribe({
             next: (dadosQuantidadeTimes) => {

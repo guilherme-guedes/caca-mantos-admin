@@ -1,3 +1,5 @@
+import { TimeResumido } from "./dto/time-resumido";
+
 export interface Time {
   id: string;
   nome: string;
@@ -7,5 +9,6 @@ export interface Time {
   ativo: boolean;
   principal: boolean;
   termos: string[];
-  homonimos: string[];
+  homonimos: TimeResumido[];
+  timePrincipal: TimeResumido | null;
 }

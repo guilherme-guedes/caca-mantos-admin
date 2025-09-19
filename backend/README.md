@@ -1,6 +1,7 @@
 # TODO
 
 ## Negócio
+- Retorno de consulta de time com homonimos preenchidos e pai <<
 - Endpoint para listar times elegíveis para serem homônimos (não principais e não homônimos de outro);
 
 ## Geral

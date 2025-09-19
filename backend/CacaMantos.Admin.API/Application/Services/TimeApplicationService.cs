@@ -4,6 +4,7 @@ using backend.Domain.Entities;
 using backend.Domain.IRepositories;
 using backend.Domain.Pesquisas;
 using CacaMantos.Admin.API.Application.DTO;
+using CacaMantos.Admin.API.Application.DTO.Responses;
 using Mapster;
 
 namespace backend.Application.Services
@@ -17,7 +18,7 @@ namespace backend.Application.Services
             _timeRepositorio = timeRepositorio;
         }
 
-        public async Task<Time> Criar(CriacaoTimeRequest request)
+        public async Task<TimeResponse> Criar(CriacaoTimeRequest request)
         {
             var timesHomonimos = await _timeRepositorio.Consultar([.. request.Homonimos.Select(Guid.Parse)]);
             var timePrincipal = await _timeRepositorio.Obter(request.TimePrincipal != null ? Guid.Parse(request.TimePrincipal) : Guid.Empty);
@@ -30,10 +31,11 @@ namespace backend.Application.Services
             if (timePrincipal is not null)
                 time.AlterarTimePrincipal(timePrincipal);
 
-            return await _timeRepositorio.Criar(time);
+            var timeCriado = await _timeRepositorio.Criar(time);
+            return timeCriado.Adapt<TimeResponse>();
         }
 
-        public async Task<Time> Atualizar(EdicaoTimeRequest request)
+        public async Task<TimeResponse> Atualizar(EdicaoTimeRequest request)
         {
             var timesHomonimos = await _timeRepositorio.Consultar([.. request.Homonimos.Select(Guid.Parse)]);
             var timePrincipal = await _timeRepositorio.Obter(request.TimePrincipal != null ? Guid.Parse(request.TimePrincipal) : Guid.Empty);
@@ -46,8 +48,8 @@ namespace backend.Application.Services
             if (timePrincipal is not null)
                 time.AlterarTimePrincipal(timePrincipal);
 
-
-            return await _timeRepositorio.Atualizar(time);
+            var timeAtualizado = await _timeRepositorio.Atualizar(time);
+            return timeAtualizado.Adapt<TimeResponse>();
         }
 
         public async Task<Boolean> Excluir(string id)
@@ -55,15 +57,23 @@ namespace backend.Application.Services
             return await _timeRepositorio.Excluir(new Guid(id));
         }
 
-        public async Task<Time> Obter(string id)
+        public async Task<TimeResponse> Obter(string id)
         {
-            return await _timeRepositorio.Obter(new Guid(id));
+            var timeConsultado = await _timeRepositorio.Obter(new Guid(id));
+            return timeConsultado?.Adapt<TimeResponse>();
         }
-        
-        public async Task<PaginaDTO<Time>> Consultar(PesquisaPaginadaTimeRequest request)
+
+        public async Task<PaginaDTO<TimeResponse>> Consultar(PesquisaPaginadaTimeRequest request)
         {
             var pesquisa = request.Adapt<PesquisaPaginadaTime>();
-            return await _timeRepositorio.Consultar(pesquisa);
+            var timesconsultados = await _timeRepositorio.Consultar(pesquisa);
+            
+            return new PaginaDTO<TimeResponse>(
+                timesconsultados.PaginaAtual,
+                timesconsultados.ItensPorPagina,
+                timesconsultados.QuantidadeTotal,
+                timesconsultados.Itens.Adapt<List<TimeResponse>>()
+            );
         }
     }
 }
