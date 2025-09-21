@@ -1,0 +1,47 @@
+root = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Uso de var
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+# Estilo de chaves (Allman)
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+
+# Espaços
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_after_cast = true
+csharp_space_around_conditional_operator = before_and_after
+
+# Usings
+csharp_using_directive_placement = outside_namespace:warning
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = true
+
+# Naming conventions
+dotnet_naming_rule.classes_should_be_pascal_case.severity = warning
+dotnet_naming_rule.classes_should_be_pascal_case.symbols = all_classes
+dotnet_naming_rule.classes_should_be_pascal_case.style = pascal_case_style
+dotnet_naming_symbols.all_classes.applicable_kinds = class
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+# Regras específicas para testes
+[*Test.cs]
+dotnet_diagnostic.CA1052.severity = none
+dotnet_diagnostic.CA1515.severity = none
+dotnet_diagnostic.CA1812.severity = none
+dotnet_diagnostic.CA1852.severity = none
+dotnet_diagnostic.IDE0040.severity = none
+dotnet_diagnostic.IDE0062.severity = none

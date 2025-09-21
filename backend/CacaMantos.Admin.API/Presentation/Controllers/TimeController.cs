@@ -1,7 +1,9 @@
-using backend.Application.Services;
 using backend.Application.DTO;
-using Microsoft.AspNetCore.Mvc;
+
 using CacaMantos.Admin.API.Application.DTO;
+using CacaMantos.Admin.API.Application.Services;
+
+using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Presentation.Controllers
 {
@@ -21,32 +23,32 @@ namespace backend.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Criar([FromBody] CriacaoTimeRequest request)
         {
-            return Ok(await _timeApplicationService.Criar(request));
+            return Ok(await _timeApplicationService.Criar(request).ConfigureAwait(false));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar([FromBody] EdicaoTimeRequest request)
         {
-            return Ok(await _timeApplicationService.Atualizar(request));
+            return Ok(await _timeApplicationService.Atualizar(request).ConfigureAwait(false));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(string id)
         {
-            await _timeApplicationService.Excluir(id);
+            await _timeApplicationService.Excluir(id).ConfigureAwait(false);
             return NoContent();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Obter(string id)
         {
-            return Ok(await _timeApplicationService.Obter(id));
+            return Ok(await _timeApplicationService.Obter(id).ConfigureAwait(false));
         }
 
         [HttpGet]
         public async Task<IActionResult> Consultar([FromQuery] PesquisaPaginadaTimeRequest request)
         {
-            return Ok(await _timeApplicationService.Consultar(request));
+            return Ok(await _timeApplicationService.Consultar(request).ConfigureAwait(false));
         }
     }
 }

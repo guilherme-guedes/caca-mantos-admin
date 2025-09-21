@@ -1,7 +1,7 @@
-namespace backend.Infra.Data.Model
+namespace CacaMantos.Admin.API.Infra.Data.Model
 {
     public abstract class EntityBaseModel
-    {        
-        public Guid id { get; set; }
+    {
+        public Guid Id { get; set; }
     }
 }

@@ -1,12 +1,12 @@
-namespace backend.Infra.Data.Repositories
+namespace CacaMantos.Admin.API.Infra.Data.Repositories
 {
     public abstract class BaseRepository
     {
-        protected readonly ContextoBanco _context;
+        protected ContextoBanco Context { get; private set; }
 
-        public BaseRepository(ContextoBanco context)
+        protected BaseRepository(ContextoBanco context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context), "Contexto do banco não pode ser nulo.");
-        }        
+            this.Context = context ?? throw new ArgumentNullException(nameof(context), "Contexto do banco não pode ser nulo.");
+        }
     }
 }

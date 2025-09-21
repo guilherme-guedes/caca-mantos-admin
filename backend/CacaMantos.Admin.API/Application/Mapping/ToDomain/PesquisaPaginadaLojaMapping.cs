@@ -1,5 +1,7 @@
 using backend.Application.DTO;
-using backend.Domain.Pesquisas;
+
+using CacaMantos.Admin.API.Domain.Pesquisas;
+
 using Mapster;
 
 namespace CacaMantos.Admin.API.Application.Mapping.ToDomain

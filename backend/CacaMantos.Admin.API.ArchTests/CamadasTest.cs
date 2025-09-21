@@ -1,12 +1,12 @@
-﻿using ArchUnitNET.Domain;
+using ArchUnitNET.Domain;
 using ArchUnitNET.Loader;
 using ArchUnitNET.xUnit;
-using backend;
+
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
 namespace CacaMantos.Admin.API.ArchTests;
 
-public class TestesCamadas
+public class CamadasTest
 {
     private static readonly Architecture Architecture = new ArchLoader().LoadAssemblies(typeof(Program).Assembly).Build();
 
@@ -15,26 +15,26 @@ public class TestesCamadas
     {
         var rule = Classes()
             .That()
-            .ResideInNamespace("backend.Application.*")
+            .ResideInNamespace("CacaMantos.Admin.API.Application.*")
             .Should()
             .NotDependOnAny(Classes()
                 .That()
-                .ResideInNamespace("backend.Presentation.*"))                
+                .ResideInNamespace("CacaMantos.Admin.API.Presentation.*"))
             .WithoutRequiringPositiveResults();
 
         rule.Check(Architecture);
-    }    
+    }
 
     [Fact]
     public void CamadaDominio_NaoPodemChamar_CamadaApresentacao()
     {
         var rule = Classes()
             .That()
-            .ResideInNamespace("backend.Domain.*")
+            .ResideInNamespace("CacaMantos.Admin.API.Domain.*")
             .Should()
             .NotDependOnAny(Classes()
                 .That()
-                .ResideInNamespace("backend.Presentation.*"))                
+                .ResideInNamespace("CacaMantos.Admin.API.Presentation.*"))
             .WithoutRequiringPositiveResults();
 
         rule.Check(Architecture);
@@ -45,11 +45,11 @@ public class TestesCamadas
     {
         var rule = Classes()
             .That()
-            .ResideInNamespace("backend.Infra.*")
+            .ResideInNamespace("CacaMantos.Admin.API.Infra.*")
             .Should()
             .NotDependOnAny(Classes()
                 .That()
-                .ResideInNamespace("backend.Presentation.*"))
+                .ResideInNamespace("CacaMantos.Admin.API.Presentation.*"))
             .WithoutRequiringPositiveResults();
 
         rule.Check(Architecture);

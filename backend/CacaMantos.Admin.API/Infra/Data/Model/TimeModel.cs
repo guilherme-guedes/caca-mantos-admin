@@ -1,17 +1,17 @@
-namespace backend.Infra.Data.Model
+namespace CacaMantos.Admin.API.Infra.Data.Model
 {
     public class TimeModel : EntityBaseModel
-    {        
-        public String nome { get; set; }
-        public String identificador { get; set; }
-        public String nomeBusca { get; set; }
-        public IList<String> termos { get; set; }
-        public bool destaque { get; set; }
-        public bool ativo { get; set; }
-        public bool principal { get; set; }
-        public IList<TimeModel> homonimos { get; set; }
-        public IList<LojaTimeModel> lojas { get; set; }
-        public Guid? timePrincipalId { get; set; }
-        public TimeModel timePrincipal { get; set; }
+    {
+        public String Nome { get; set; }
+        public String Identificador { get; set; }
+        public String NomeBusca { get; set; }
+        public IList<String> Termos { get; set; }
+        public bool Destaque { get; set; }
+        public bool Ativo { get; set; }
+        public bool Principal { get; set; }
+        public IList<TimeModel> Homonimos { get; set; }
+        public IList<LojaTimeModel> Lojas { get; set; }
+        public Guid? TimePrincipalId { get; set; }
+        public TimeModel TimePrincipal { get; set; }
     }
 }

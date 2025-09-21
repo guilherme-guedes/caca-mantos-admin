@@ -1,4 +1,4 @@
-## Admin - Caça Mantos
+# Admin - Caça Mantos
 
 Projeto para gerenciamento das informações do website Caça Mantos (cacamantos.com.br);
 
@@ -6,18 +6,30 @@ Projeto para gerenciamento das informações do website Caça Mantos (cacamantos
 
 Neste repositório estão versionadas a aplicação frontend e a backend que dão suporte ao painel admin.
 
-### Tecnologias
+## Tecnologias
 
 - Frontend : Anguar 19
 - Backend : ASP.NET Core 9
+ Há no backend análise de código e testes.\
+ No commit são executadas verificações de convenção de código;\
+ No push são executadas além das verificações anteriores os testes de unidade;
 
+## Setup
 
-### TODO
+### Restaure as ferramentas locais
 
-- Utilizar DTOs para não ferir entidades Loja com times válidos e Times com homônimos válidos)
-- Validações de instância de Lojas e Times
+#### Backend
+   ```sh
+   dotnet tool restore
+   dotnet husky install
+   ```
+Isso instalará o husky e o format que serão utilizados para revisão dos commit's e push's.\
+  
+Caso queira rodar a formatação segundo os analisadores:
+   ```sh
+   dotnet format analyzers
+   ```
 
 ### ROADMAP
 
-- Utilizar banco relacional 
 - Worker / Agent (Fila) para replicar os dados alterados do admin nos bancos utilizado pela aplicação principal

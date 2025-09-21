@@ -1,8 +1,9 @@
-using backend.Domain.Entities;
-using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Domain.Entities;
+using CacaMantos.Admin.API.Infra.Data.Model;
+
 using Mapster;
 
-namespace backend.Infra.Data.Mapping.Entities
+namespace CacaMantos.Admin.API.Infra.Data.Mapping.Entities
 {
     public class TimeMap : IRegister
     {
@@ -10,46 +11,46 @@ namespace backend.Infra.Data.Mapping.Entities
         {
             config.NewConfig<TimeModel, Time>()
                     .MapWith(src => new Time(
-                        src.id,
-                        src.nome,
-                        src.identificador,
-                        src.nomeBusca,
-                        src.termos,
-                        src.destaque,
-                        src.ativo,
-                        src.principal,
-                        src.homonimos != null ? src.homonimos.Adapt<List<Time>>() : null,
-                        src.timePrincipal != null ? src.timePrincipal.Adapt<Time>() : null
+                        src.Id,
+                        src.Nome,
+                        src.Identificador,
+                        src.NomeBusca,
+                        src.Termos,
+                        src.Destaque,
+                        src.Ativo,
+                        src.Principal,
+                        src.Homonimos != null ? src.Homonimos.Adapt<List<Time>>() : null,
+                        src.TimePrincipal != null ? src.TimePrincipal.Adapt<Time>() : null
                     ));
 
             config.NewConfig<LojaTimeModel, Time>()
                     .MapWith(src => new Time(
-                        src.time.id,
-                        src.time.identificador,
-                        src.time.nome,
-                        src.time.nomeBusca,
-                        src.time.termos,
-                        src.time.destaque,
-                        src.time.ativo,
-                        src.time.principal,
+                        src.Time.Id,
+                        src.Time.Identificador,
+                        src.Time.Nome,
+                        src.Time.NomeBusca,
+                        src.Time.Termos,
+                        src.Time.Destaque,
+                        src.Time.Ativo,
+                        src.Time.Principal,
                         null,
                         null
                     ));
-            
-              config.NewConfig<Time, TimeModel>()
-                    .MapWith(src => new TimeModel()
-                    {
-                        id = src.Id,
-                        nome = src.Nome,
-                        identificador= src.Identificador,
-                        nomeBusca = src.NomeBusca,
-                        termos = src.Termos,
-                        destaque = src.Destaque,
-                        ativo = src.Ativo,
-                        principal = src.Principal,
-                        homonimos = src.Homonimos != null ? src.Homonimos.Adapt<List<TimeModel>>() : null,
-                        timePrincipal = src.TimePrincipal != null ? src.TimePrincipal.Adapt<TimeModel>() : null
-                    });
+
+            config.NewConfig<Time, TimeModel>()
+                  .MapWith(src => new TimeModel()
+                  {
+                      Id = src.Id,
+                      Nome = src.Nome,
+                      Identificador = src.Identificador,
+                      NomeBusca = src.NomeBusca,
+                      Termos = src.Termos,
+                      Destaque = src.Destaque,
+                      Ativo = src.Ativo,
+                      Principal = src.Principal,
+                      Homonimos = src.Homonimos != null ? src.Homonimos.Adapt<List<TimeModel>>() : null,
+                      TimePrincipal = src.TimePrincipal != null ? src.TimePrincipal.Adapt<TimeModel>() : null
+                  });
         }
     }
 }

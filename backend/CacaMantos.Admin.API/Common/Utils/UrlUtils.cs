@@ -1,6 +1,6 @@
 namespace CacaMantos.Admin.API.Common.Utils
 {
-    public class UrlUtils
+    public static class UrlUtils
     {
         public static bool UrlValida(string url)
         {

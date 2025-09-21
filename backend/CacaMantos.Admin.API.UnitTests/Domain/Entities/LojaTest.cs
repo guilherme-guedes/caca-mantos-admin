@@ -1,4 +1,5 @@
-using backend.Domain.Entities;
+using CacaMantos.Admin.API.Domain.Entities;
+
 using Shouldly;
 
 namespace CacaMantos.Admin.API.UnitTests.Domain.Entities
@@ -13,8 +14,8 @@ namespace CacaMantos.Admin.API.UnitTests.Domain.Entities
 
             loja.Id.ShouldBe(id);
             loja.Nome.ShouldBe("Loja 1");
-            loja.Site.ShouldBe("https://loja1.com.br");
-            loja.UrlBusca.ShouldBe("https://loja1.com.br/@time");
+            loja.Site.AbsoluteUri.ShouldBe("https://loja1.com.br/");
+            loja.UrlBusca.AbsoluteUri.ShouldBe("https://loja1.com.br/@time");
             loja.Ativa.ShouldBe(true);
             loja.Parceira.ShouldBe(true);
         }

@@ -1,8 +1,9 @@
-using backend.Domain.Entities;
-using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Domain.Entities;
+using CacaMantos.Admin.API.Infra.Data.Model;
+
 using Mapster;
 
-namespace backend.Infra.Data.Mapping.Entities
+namespace CacaMantos.Admin.API.Infra.Data.Mapping.Entities
 {
     public class LojaMap : IRegister
     {
@@ -10,14 +11,14 @@ namespace backend.Infra.Data.Mapping.Entities
         {
             config.NewConfig<LojaModel, Loja>()
                     .MapWith(src => new Loja(
-                        src.id,
-                        src.nome,
-                        src.site,
-                        src.urlBusca,
-                        src.parceira,
-                        src.ativa,
-                        src.times != null ? src.times.Adapt<List<Time>>() : null
+                        src.Id,
+                        src.Nome,
+                        src.Site,
+                        src.UrlBusca,
+                        src.Parceira,
+                        src.Ativa,
+                        src.Times != null ? src.Times.Adapt<List<Time>>() : null
                     ));
-        }    
+        }
     }
 }

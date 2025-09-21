@@ -1,4 +1,5 @@
-using backend.Domain.Pesquisas;
+using CacaMantos.Admin.API.Domain.Pesquisas;
+
 using Shouldly;
 
 namespace CacaMantos.Admin.API.UnitTests.Domain.Pesquisas

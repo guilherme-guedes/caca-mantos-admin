@@ -1,10 +1,10 @@
-namespace backend.Domain.Pesquisas
+namespace CacaMantos.Admin.API.Domain.Pesquisas
 {
     public class PesquisaPaginadaLoja : PesquisaPaginada
     {
-        public string Trecho  { get; set; }
-        public bool? Parceira  { get; set; }
-        public bool? Ativo  { get; set; }
+        public string Trecho { get; set; }
+        public bool? Parceira { get; set; }
+        public bool? Ativo { get; set; }
 
         public PesquisaPaginadaLoja(int pagina = 1, int tamanhoPagina = 5, string trecho = null, bool? parceira = null, bool? ativo = null)
             : base(pagina, tamanhoPagina)

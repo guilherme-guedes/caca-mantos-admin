@@ -1,4 +1,5 @@
-﻿using backend.Domain.Entities;
+using CacaMantos.Admin.API.Domain.Entities;
+
 using Shouldly;
 
 namespace CacaMantos.Admin.API.UnitTests;

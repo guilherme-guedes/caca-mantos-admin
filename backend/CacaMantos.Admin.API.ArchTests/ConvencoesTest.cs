@@ -1,12 +1,12 @@
 using ArchUnitNET.Domain;
 using ArchUnitNET.Loader;
 using ArchUnitNET.xUnit;
-using backend;
+
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
-namespace CacaMantos.Admin.API.ArchTests 
+namespace CacaMantos.Admin.API.ArchTests
 {
-    public class TestesConvencao
+    public class ConvencoesTest
     {
         private static readonly Architecture Architecture = new ArchLoader().LoadAssemblies(typeof(Program).Assembly).Build();
 
@@ -26,6 +26,8 @@ namespace CacaMantos.Admin.API.ArchTests
             var rule = Classes()
                 .That()
                 .AreAbstract()
+                .And()
+                .AreNotSealed()
                 .Should()
                 .HaveNameContaining("Abstract")
                 .OrShould()
@@ -39,23 +41,9 @@ namespace CacaMantos.Admin.API.ArchTests
         {
             var rule = Classes()
                 .That()
-                .ResideInNamespace("backend.Presentation.Controllers")
+                .ResideInNamespace("CacaMantos.Admin.API.Presentation.Controllers")
                 .Should()
                 .HaveNameEndingWith("Controller");
-
-            rule.Check(Architecture);
-        }
-
-        [Fact]
-        public void Servicos_DevemTerSufixo()
-        {
-            var rule = Classes()
-                .That()
-                .ResideInNamespace("backend.Domain.Services")
-                .Or()
-                .ResideInNamespace("backend.Domain.IServices")
-                .Should()
-                .HaveNameEndingWith("Service");
 
             rule.Check(Architecture);
         }
@@ -65,21 +53,21 @@ namespace CacaMantos.Admin.API.ArchTests
         {
             var rule = Classes()
                 .That()
-                .ResideInNamespace("backend.Infra.Data.Repositories")
+                .ResideInNamespace("CacaMantos.Admin.API.Infra.Data.Repositories")
                 .Or()
-                .ResideInNamespace("backend.Domain.Repositories")
+                .ResideInNamespace("CacaMantos.Admin.API.Domain.Repositories")
                 .Should()
                 .HaveNameEndingWith("Repository");
 
             rule.Check(Architecture);
         }
-        
+
         [Fact]
         public void Utils_DevemTerSufixo()
         {
             var rule = Classes()
                 .That()
-                .ResideInNamespace("backend.Utils")
+                .ResideInNamespace("CacaMantos.Admin.API.Common.Utils")
                 .Should()
                 .HaveNameEndingWith("Utils")
                 .OrShould()

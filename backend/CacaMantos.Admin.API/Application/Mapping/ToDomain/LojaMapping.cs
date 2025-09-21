@@ -1,5 +1,6 @@
-using backend.Domain.Entities;
 using CacaMantos.Admin.API.Application.DTO;
+using CacaMantos.Admin.API.Domain.Entities;
+
 using Mapster;
 
 namespace CacaMantos.Admin.API.Application.Mapping.ToDomain
@@ -34,8 +35,8 @@ namespace CacaMantos.Admin.API.Application.Mapping.ToDomain
                     .MapWith(src => new LojaResponse(
                         src.Id.ToString(),
                         src.Nome,
-                        src.Site,
-                        src.UrlBusca,
+                        src.Site != null ? src.Site.AbsoluteUri : null,
+                        src.UrlBusca != null ? src.UrlBusca.AbsoluteUri : null,
                         src.Parceira,
                         src.Ativa,
                         src.Times.Adapt<IList<TimeResumidoDTO>>()

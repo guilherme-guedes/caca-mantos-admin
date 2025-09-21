@@ -1,8 +1,6 @@
-using CacaMantos.Admin.API.Domain.Entities;
-
-namespace backend.Domain.Entities
+namespace CacaMantos.Admin.API.Domain.Entities
 {
-    public class Time :  EntidadeBase
+    public class Time : EntidadeBase
     {
         public String Nome { get; private set; }
         public String Identificador { get; private set; }
@@ -25,11 +23,11 @@ namespace backend.Domain.Entities
                     IList<Time> homonimos = null,
                     Time timePrincipal = null)
         {
-            if(principal && timePrincipal != null)
+            if (principal && timePrincipal != null)
                 throw new InvalidOperationException("Não é possível definir um time principal para um time que é principal.");
-            if(!principal && homonimos != null && homonimos.Count > 0)
+            if (!principal && homonimos != null && homonimos.Count > 0)
                 throw new InvalidOperationException("Não é possível adicionar times homônimos a um time que não é principal.");
-                
+
             this.Id = id;
             this.Nome = nome;
             this.Identificador = identificador;
@@ -53,7 +51,7 @@ namespace backend.Domain.Entities
 
         public void AlterarTimesHomonimos(IList<Time> homonimos)
         {
-            if( homonimos == null || homonimos.Count == 0)
+            if (homonimos == null || homonimos.Count == 0)
             {
                 this.Homonimos = new List<Time>();
                 return;
@@ -71,8 +69,7 @@ namespace backend.Domain.Entities
             if (!this.Principal)
                 throw new InvalidOperationException("Não é possível adicionar times homônimos a um time que não é principal.");
 
-            if (homonimo == null)
-                throw new ArgumentNullException("Time homônimo não informado", nameof(homonimo));
+            ArgumentNullException.ThrowIfNull(homonimo);
 
             if (Homonimos == null)
                 Homonimos = new List<Time>();
@@ -90,11 +87,11 @@ namespace backend.Domain.Entities
 
             Termos.Add(termo);
         }
-        
-        public bool TemTimesHomonimos() =>  Homonimos?.Count > 0;  
-              
+
+        public bool TemTimesHomonimos() => Homonimos?.Count > 0;
+
         public bool TemTimePrincipal() => TimePrincipal != null;
-        
-        public bool TemTermos() => Termos?.Count > 0;        
+
+        public bool TemTermos() => Termos?.Count > 0;
     }
 }

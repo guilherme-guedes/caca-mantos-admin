@@ -2,9 +2,9 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace backend.Utils
+namespace CacaMantos.Admin.API.Common.Utils
 {
-    public class StringUtils
+    public static class StringUtils
     {
         public static string RemoverAcentos(string trecho)
         {

@@ -1,8 +1,9 @@
-using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Infra.Data.Model;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace backend.Infra.Data.Mapping.Tabelas
+namespace CacaMantos.Admin.API.Infra.Data.Mapping.Tabelas
 {
     public class LojaModelMapping : IEntityTypeConfiguration<LojaModel>
     {
@@ -10,37 +11,37 @@ namespace backend.Infra.Data.Mapping.Tabelas
         {
             builder.ToTable("lojas");
 
-            builder.HasKey(l => l.id);
-            builder.Property(l => l.id)
+            builder.HasKey(l => l.Id);
+            builder.Property(l => l.Id)
                 .HasColumnName("id");
 
-            builder.Property(l => l.nome)
+            builder.Property(l => l.Nome)
                 .HasColumnName("nome")
                 .IsRequired()
                 .HasMaxLength(80);
 
-            builder.Property(l => l.site)
+            builder.Property(l => l.Site)
                 .HasColumnName("site")
                 .IsRequired()
                 .HasMaxLength(60);
 
-            builder.Property(l => l.urlBusca)
+            builder.Property(l => l.UrlBusca)
                 .HasColumnName("url_busca_time")
                 .IsRequired()
                 .HasMaxLength(130);
 
-            builder.Property(l => l.parceira)
+            builder.Property(l => l.Parceira)
                 .HasColumnName("parceira")
                 .HasDefaultValue(false);
 
-            builder.Property(l => l.ativa)
+            builder.Property(l => l.Ativa)
                 .HasColumnName("ativa")
                 .HasDefaultValue(true);
-                
-            builder.HasMany(l => l.times)
-                .WithOne(t => t.loja)
-                .HasForeignKey(lt => lt.idTime)
-                .OnDelete(DeleteBehavior.Cascade);;
+
+            builder.HasMany(l => l.Times)
+                .WithOne(t => t.Loja)
+                .HasForeignKey(lt => lt.IdTime)
+                .OnDelete(DeleteBehavior.Cascade); ;
         }
     }
 }

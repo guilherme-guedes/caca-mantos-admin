@@ -1,11 +1,12 @@
-using backend.Domain.Entities;
 using CacaMantos.Admin.API.Application.DTO;
 using CacaMantos.Admin.API.Application.DTO.Responses;
+using CacaMantos.Admin.API.Domain.Entities;
+
 using Mapster;
 
 namespace CacaMantos.Admin.API.Application.Mapping.ToDomain
 {
-    public class TimeMapping: IRegister
+    public class TimeMapping : IRegister
     {
         public void Register(TypeAdapterConfig config)
         {
@@ -55,8 +56,8 @@ namespace CacaMantos.Admin.API.Application.Mapping.ToDomain
                         src.Principal,
                         src.Homonimos != null ? src.Homonimos.Adapt<IList<TimeResumidoDTO>>() : null,
                         src.TimePrincipal != null ? src.TimePrincipal.Adapt<TimeResumidoDTO>() : null
-                    ));                    
-                    
+                    ));
+
             config.NewConfig<Time, TimeResponse>()
                     .MapWith(src => new TimeResponse(
                         src.Id.ToString(),
@@ -70,6 +71,6 @@ namespace CacaMantos.Admin.API.Application.Mapping.ToDomain
                         src.Homonimos != null ? src.Homonimos.Adapt<IList<TimeResumidoDTO>>() : null,
                         src.TimePrincipal != null ? src.TimePrincipal.Adapt<TimeResumidoDTO>() : null
                     ));
-        }        
+        }
     }
 }

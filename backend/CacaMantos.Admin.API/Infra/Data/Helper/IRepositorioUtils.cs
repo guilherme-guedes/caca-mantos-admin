@@ -1,4 +1,5 @@
-using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Infra.Data.Model;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace CacaMantos.Admin.API.Infra.Data.Helper

@@ -1,20 +1,26 @@
-using backend.Application.Services;
-using backend.Domain.IRepositories;
-using backend.Infra.Data;
-using backend.Infra.Data.Mapping.Entities;
-using backend.Infra.Data.Repositories;
+using System.Globalization;
+
 using CacaMantos.Admin.API.Application.Mapping.ToDomain;
 using CacaMantos.Admin.API.Application.Services;
+using CacaMantos.Admin.API.Domain.IRepositories;
+using CacaMantos.Admin.API.Infra.Data;
 using CacaMantos.Admin.API.Infra.Data.Helper;
+using CacaMantos.Admin.API.Infra.Data.Mapping.Entities;
+using CacaMantos.Admin.API.Infra.Data.Repositories;
+
 using Mapster;
+
 using MapsterMapper;
+
 using Microsoft.EntityFrameworkCore;
+
 using Prometheus;
+
 using Serilog;
 
-namespace backend
+namespace CacaMantos.Admin.API
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -32,7 +38,7 @@ namespace backend
 
                 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration)
                                                                 .Enrich.FromLogContext()
-                                                                .WriteTo.Console()
+                                                                .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
                                                                 .CreateLogger();
 
                 builder.Host.UseSerilog();

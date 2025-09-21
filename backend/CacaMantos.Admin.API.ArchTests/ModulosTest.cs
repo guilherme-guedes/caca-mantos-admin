@@ -1,12 +1,12 @@
 using ArchUnitNET.Domain;
 using ArchUnitNET.Loader;
 using ArchUnitNET.xUnit;
-using backend;
+
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
 namespace CacaMantos.Admin.API.ArchTests
 {
-    public class TestesModulos
+    public class ModulosTest
     {
         private static readonly Architecture Architecture = new ArchLoader().LoadAssemblies(typeof(Program).Assembly).Build();
 
@@ -15,11 +15,11 @@ namespace CacaMantos.Admin.API.ArchTests
         {
             var rule = Classes()
                 .That()
-                .ResideInNamespace("backend.Presentation.Controllers")
+                .ResideInNamespace("CacaMantos.Admin.API.Presentation.Controllers")
                 .Should()
                 .NotDependOnAny(Classes()
                     .That()
-                    .ResideInNamespaceMatching("backend.Infra.Data"));
+                    .ResideInNamespaceMatching("CacaMantos.Admin.API.Infra.Data"));
 
             rule.Check(Architecture);
         }
@@ -29,13 +29,15 @@ namespace CacaMantos.Admin.API.ArchTests
         {
             var rule = Classes()
                 .That()
-                .ResideInNamespace("backend.Domain.Entities")
+                .ResideInNamespace("CacaMantos.Admin.API.Domain.Entities")
                 .Should()
                 .OnlyDependOn(Classes()
                     .That()
                     .ResideInNamespaceMatching("System.*")
                     .Or()
-                    .ResideInNamespaceMatching("backend.Domain.*"));
+                    .ResideInNamespaceMatching("CacaMantos.Admin.API.Common.*")
+                    .Or()
+                    .ResideInNamespaceMatching("CacaMantos.Admin.API.Domain.*"));
 
             rule.Check(Architecture);
         }
@@ -45,19 +47,19 @@ namespace CacaMantos.Admin.API.ArchTests
         {
             var rule = Classes()
                 .That()
-                .ResideInNamespace("backend.Presentation.Controllers")
+                .ResideInNamespace("CacaMantos.Admin.API.Presentation.Controllers")
                 .Should()
                 .OnlyDependOn(Classes()
                     .That()
-                    .ResideInNamespaceMatching("backend.Application")
+                    .ResideInNamespaceMatching("CacaMantos.Admin.API.Application")
                     .Or()
-                    .ResideInNamespaceMatching("backend.Presentation")
+                    .ResideInNamespaceMatching("CacaMantos.Admin.API.Presentation")
                     .Or()
                     .ResideInNamespaceMatching("System")
                     .Or()
-                    .ResideInNamespaceMatching("backend.Common")
+                    .ResideInNamespaceMatching("CacaMantos.Admin.API.Common")
                     .Or()
-                    .ResideInNamespaceMatching("backend.Domain.Entities")
+                    .ResideInNamespaceMatching("CacaMantos.Admin.API.Domain.Entities")
                     .Or()
                     .ResideInNamespaceMatching("Microsoft.AspNetCore")
                     .Or()

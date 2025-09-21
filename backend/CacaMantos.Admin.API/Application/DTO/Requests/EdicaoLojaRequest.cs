@@ -9,5 +9,5 @@ namespace CacaMantos.Admin.API.Application.DTO
         String UrlBusca,
         bool Parceira,
         bool Ativa,
-        IList<String> Times);   
+        IList<String> Times);
 }

@@ -1,4 +1,4 @@
-namespace backend.Domain.Pesquisas
+namespace CacaMantos.Admin.API.Domain.Pesquisas
 {
     public class PesquisaPaginadaTime : PesquisaPaginada
     {
@@ -19,6 +19,6 @@ namespace backend.Domain.Pesquisas
         public bool TemTrechoInformado() => !string.IsNullOrEmpty(Trecho);
         public bool TemDestaqueInformado() => Destaque.HasValue;
         public bool TemAtivoInformado() => Ativo.HasValue;
-        public bool TemPrincipalInformado() => Principal.HasValue;  
+        public bool TemPrincipalInformado() => Principal.HasValue;
     }
 }

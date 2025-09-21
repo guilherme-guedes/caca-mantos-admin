@@ -1,4 +1,5 @@
-using backend.Common.DTO;
+using CacaMantos.Admin.API.Common.DTO;
+
 using Shouldly;
 
 namespace CacaMantos.Admin.API.UnitTests.Common.DTO

@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>    
+    <NoWarn>CA1000;CA1032;CA1054;CA1056;CA1062;CA1515;CA2227</NoWarn>
+  </PropertyGroup>
+</Project>

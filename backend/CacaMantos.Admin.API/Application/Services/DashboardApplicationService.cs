@@ -1,4 +1,4 @@
-using backend.Domain.IRepositories;
+using CacaMantos.Admin.API.Domain.IRepositories;
 
 namespace CacaMantos.Admin.API.Application.Services
 {

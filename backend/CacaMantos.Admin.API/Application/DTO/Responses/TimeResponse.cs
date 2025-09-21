@@ -10,5 +10,5 @@ namespace CacaMantos.Admin.API.Application.DTO.Responses
         bool Ativo,
         bool Principal,
         IList<TimeResumidoDTO> Homonimos,
-        TimeResumidoDTO TimePrincipal);    
+        TimeResumidoDTO TimePrincipal);
 }

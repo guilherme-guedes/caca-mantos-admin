@@ -1,0 +1,31 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+### BACKEND
+echo "🔍 Verificando push backend..."
+
+cd backend || exit 1
+
+# 1️⃣ Formatação
+dotnet format analyzers --verify-no-changes --verify-no-changes
+if [ $? -ne 0 ]; then
+  echo "❌ Código não está formatado. Execute 'dotnet format analyzers --verify-no-changes'."
+  exit 1
+fi
+
+# 2️⃣ Build
+dotnet build --no-restore -warnaserror
+if [ $? -ne 0 ]; then
+  echo "❌ Build falhou."
+  exit 1
+fi
+
+# 3️⃣ Testes unitários
+echo "🏃 Rodando testes unitários..."
+dotnet test ./UnitTests/UnitTests.csproj --no-build --verbosity normal
+if [ $? -ne 0 ]; then
+  echo "❌ Testes unitários falharam."
+  exit 1
+fi
+
+echo "✅ Push aprovado."

@@ -1,8 +1,8 @@
-using backend.Domain.Entities;
-using backend.Domain.Pesquisas;
-using backend.Common.DTO;
+using CacaMantos.Admin.API.Common.DTO;
+using CacaMantos.Admin.API.Domain.Entities;
+using CacaMantos.Admin.API.Domain.Pesquisas;
 
-namespace backend.Domain.IRepositories
+namespace CacaMantos.Admin.API.Domain.IRepositories
 {
     public interface ITimeRepository
     {

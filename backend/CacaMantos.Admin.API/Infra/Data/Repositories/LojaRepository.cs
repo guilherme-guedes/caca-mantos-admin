@@ -1,18 +1,20 @@
-using backend.Domain.IRepositories;
-using backend.Domain.Entities;
-using backend.Domain.Pesquisas;
-using backend.Common.DTO;
-using Mapster;
-using Microsoft.EntityFrameworkCore;
-using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Common.DTO;
+using CacaMantos.Admin.API.Domain.Entities;
+using CacaMantos.Admin.API.Domain.IRepositories;
+using CacaMantos.Admin.API.Domain.Pesquisas;
 using CacaMantos.Admin.API.Infra.Data.Helper;
+using CacaMantos.Admin.API.Infra.Data.Model;
 
-namespace backend.Infra.Data.Repositories
+using Mapster;
+
+using Microsoft.EntityFrameworkCore;
+
+namespace CacaMantos.Admin.API.Infra.Data.Repositories
 {
     public class LojaRepository : BaseRepository, ILojaRepository
     {
         private readonly IRepositorioUtils utils;
-        
+
         public LojaRepository(ContextoBanco context, IRepositorioUtils utils) : base(context)
         {
             this.utils = utils;
@@ -20,111 +22,110 @@ namespace backend.Infra.Data.Repositories
 
         public async Task<Loja> Criar(Loja loja)
         {
-            if (loja == null)
-                throw new ArgumentNullException(nameof(loja));
+            ArgumentNullException.ThrowIfNull(loja);
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            using var transaction = await Context.Database.BeginTransactionAsync().ConfigureAwait(false);
 
             try
             {
                 var lojaModel = loja.Adapt<LojaModel>();
-                await _context.Lojas.AddAsync(lojaModel);
-                await _context.SaveChangesAsync();
+                await Context.Lojas.AddAsync(lojaModel).ConfigureAwait(false);
+                await Context.SaveChangesAsync().ConfigureAwait(false);
 
                 if (loja.Times.Any())
                 {
-                    var timesExistentes = await this.utils.CarregarDadosDeIds(_context.Times, [.. loja.Times.Select(t => t.Id)]);
+                    var timesExistentes = await utils.CarregarDadosDeIds(Context.Times, [.. loja.Times.Select(t => t.Id)]).ConfigureAwait(false);
 
-                    if(timesExistentes.Count != loja.Times.Count)
+                    if (timesExistentes.Count != loja.Times.Count)
                         throw new KeyNotFoundException("Um ou mais times informados não foram encontrados.");
 
                     var lojaTimesModel = loja.Times.Select(t => new LojaTimeModel
                     {
-                        idLoja = lojaModel.id,
-                        idTime = t.Id
+                        IdLoja = lojaModel.Id,
+                        IdTime = t.Id
                     }).ToList();
 
-                    await _context.LojasTimes.AddRangeAsync(lojaTimesModel);
+                    await Context.LojasTimes.AddRangeAsync(lojaTimesModel).ConfigureAwait(false);
                 }
 
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
+                await Context.SaveChangesAsync().ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
 
-                return await ConsultarDadosLojaParaRetorno(lojaModel);
+                return await ConsultarDadosLojaParaRetorno(lojaModel).ConfigureAwait(false);
             }
             catch
             {
-                await transaction.RollbackAsync();
+                await transaction.RollbackAsync().ConfigureAwait(false);
                 throw;
             }
         }
 
         public async Task<Loja> Atualizar(Loja loja)
         {
-            if (loja == null)
-                throw new ArgumentNullException(nameof(loja));
+            ArgumentNullException.ThrowIfNull(loja);
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            using var transaction = await Context.Database.BeginTransactionAsync().ConfigureAwait(false);
 
             try
             {
-                var lojaExistente = await _context.Lojas.Include(l => l.times).FirstOrDefaultAsync(l => l.id == loja.Id);
+                var lojaExistente = await Context.Lojas.Include(l => l.Times).FirstOrDefaultAsync(l => l.Id == loja.Id).ConfigureAwait(false);
 
                 if (lojaExistente == null)
                     throw new KeyNotFoundException($"Loja com ID {loja.Id} não encontrada.");
 
-               var dadosAtualizados = loja.Adapt<LojaModel>();
-                _context.Entry(lojaExistente).CurrentValues.SetValues(dadosAtualizados);
-    
-                lojaExistente.times.Clear();             
+                var dadosAtualizados = loja.Adapt<LojaModel>();
+                Context.Entry(lojaExistente).CurrentValues.SetValues(dadosAtualizados);
+
+                lojaExistente.Times.Clear();
 
                 if (loja.Times.Any())
                 {
-                    var timesExistentes = await this.utils.CarregarDadosDeIds(_context.Times, [.. loja.Times.Select(t => t.Id)]);
+                    var timesExistentes = await utils.CarregarDadosDeIds(Context.Times, [.. loja.Times.Select(t => t.Id)]).ConfigureAwait(false);
 
-                    if(timesExistentes.Count != loja.Times.Count)
+                    if (timesExistentes.Count != loja.Times.Count)
                         throw new KeyNotFoundException("Um ou mais times informados não foram encontrados.");
 
                     foreach (var time in timesExistentes)
                     {
-                        lojaExistente.times.Add(new LojaTimeModel
+                        lojaExistente.Times.Add(new LojaTimeModel
                         {
-                            idLoja = lojaExistente.id,
-                            idTime = time.id,
-                            time = time
+                            IdLoja = lojaExistente.Id,
+                            IdTime = time.Id,
+                            Time = time
                         });
                     }
                 }
 
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
+                await Context.SaveChangesAsync().ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
 
-                return await ConsultarDadosLojaParaRetorno(lojaExistente);
+                return await ConsultarDadosLojaParaRetorno(lojaExistente).ConfigureAwait(false);
             }
             catch
             {
-                await transaction.RollbackAsync();
+                await transaction.RollbackAsync().ConfigureAwait(false);
                 throw;
             }
         }
 
         public async Task<bool> Excluir(Guid id)
         {
-            var lojaModel = await _context.Lojas.FirstOrDefaultAsync(l => l.id == id);
+            var lojaModel = await Context.Lojas.FirstOrDefaultAsync(l => l.Id == id).ConfigureAwait(false);
             if (lojaModel is null)
                 throw new KeyNotFoundException($"Loja com ID {id} não encontrada.");
 
-            var removida = _context.Lojas.Remove(lojaModel) is not null;
-            await _context.SaveChangesAsync();
+            var removida = Context.Lojas.Remove(lojaModel) is not null;
+            await Context.SaveChangesAsync().ConfigureAwait(false);
             return removida;
         }
 
         public async Task<Loja> Obter(Guid id)
         {
-            var lojaModel = await _context.Lojas
-                                    .Include(l => l.times)
+            var lojaModel = await Context.Lojas
+                                    .Include(l => l.Times)
                                     .Include("times.time")
-                                    .AsNoTracking().FirstOrDefaultAsync(l => l.id == id);
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(l => l.Id == id).ConfigureAwait(false);
             if (lojaModel is null)
                 throw new KeyNotFoundException($"Loja com ID {id} não encontrada.");
 
@@ -136,30 +137,30 @@ namespace backend.Infra.Data.Repositories
             if (pesquisa is null)
                 return PaginaDTO<Loja>.Vazia(1, 5);
 
-            var query = _context.Lojas.AsQueryable();
+            var query = Context.Lojas.AsQueryable();
 
             if (pesquisa.TemTrechoInformado())
             {
-                var trechoLike = $"%{pesquisa.Trecho.ToLowerInvariant()}%";
+                var trechoLike = $"%{pesquisa.Trecho}%";
                 query = query.Where(l =>
-                    EF.Functions.ILike(l.nome, trechoLike) ||
-                    EF.Functions.ILike(l.site, trechoLike)
+                    EF.Functions.ILike(l.Nome, trechoLike) ||
+                    EF.Functions.ILike(l.Site, trechoLike)
                 );
             }
 
             if (pesquisa.TemParceiraInformado())
-                query = query.Where(l => l.parceira == pesquisa.Parceira.Value);
+                query = query.Where(l => l.Parceira == pesquisa.Parceira.Value);
 
             if (pesquisa.TemAtivoInformado())
-                query = query.Where(l => l.ativa == pesquisa.Ativo.Value);
+                query = query.Where(l => l.Ativa == pesquisa.Ativo.Value);
 
             var queryPaginada = query.AsNoTracking()
-                                .OrderBy(l => l.nome)
+                                .OrderBy(l => l.Nome)
                                 .Skip((pesquisa.Pagina - 1) * pesquisa.TamanhoPagina)
                                 .Take(pesquisa.TamanhoPagina);
 
-            var lojasModel = await queryPaginada.ToListAsync();
-            var totalRegistros = await query.CountAsync();
+            var lojasModel = await queryPaginada.ToListAsync().ConfigureAwait(false);
+            var totalRegistros = await query.CountAsync().ConfigureAwait(false);
 
             var lojas = lojasModel.Adapt<List<Loja>>();
 
@@ -168,15 +169,17 @@ namespace backend.Infra.Data.Repositories
 
         public Task<int> ObterQuantidadeLojas()
         {
-            return _context.Lojas.CountAsync();
+            return Context.Lojas.CountAsync();
         }
-        
+
         private async Task<Loja> ConsultarDadosLojaParaRetorno(LojaModel loja)
         {
-            var lojaComTimes = await _context.Lojas
-                                    .Include(l => l.times)
+            var lojaComTimes = await Context.Lojas
+                                    .Include(l => l.Times)
                                     .Include("times.time")
-                                    .AsNoTracking().FirstOrDefaultAsync(l => l.id == loja.id);
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(l => l.Id == loja.Id)
+                                    .ConfigureAwait(false);
 
             return lojaComTimes.Adapt<Loja>();
         }

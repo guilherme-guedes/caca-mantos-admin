@@ -1,7 +1,8 @@
-using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Infra.Data.Model;
+
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.Infra.Data
+namespace CacaMantos.Admin.API.Infra.Data
 {
     public class ContextoBanco : DbContext
     {

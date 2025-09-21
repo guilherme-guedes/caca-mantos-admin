@@ -1,8 +1,9 @@
-using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Infra.Data.Model;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace backend.Infra.Data.Mapping.Tabelas
+namespace CacaMantos.Admin.API.Infra.Data.Mapping.Tabelas
 {
     public class TimeModelMapping : IEntityTypeConfiguration<TimeModel>
     {
@@ -10,52 +11,52 @@ namespace backend.Infra.Data.Mapping.Tabelas
         {
             builder.ToTable("times");
 
-            builder.HasKey(t => t.id);
-            builder.Property(t => t.id)
+            builder.HasKey(t => t.Id);
+            builder.Property(t => t.Id)
                 .HasColumnName("id");
 
-            builder.Property(t => t.nome)
+            builder.Property(t => t.Nome)
                 .HasColumnName("nome")
                 .IsRequired()
                 .HasMaxLength(80);
 
-            builder.Property(t => t.identificador)
+            builder.Property(t => t.Identificador)
                 .HasColumnName("identificador")
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(t => t.nomeBusca)
+            builder.Property(t => t.NomeBusca)
                 .HasColumnName("nome_busca")
                 .IsRequired()
                 .HasMaxLength(80);
 
-            builder.Property(t => t.destaque)
+            builder.Property(t => t.Destaque)
                 .HasColumnName("destaque")
                 .HasDefaultValue(false);
 
-            builder.Property(t => t.ativo)
+            builder.Property(t => t.Ativo)
                 .HasColumnName("ativo")
                 .HasDefaultValue(true);
 
-            builder.Property(t => t.principal)
+            builder.Property(t => t.Principal)
                 .HasColumnName("principal")
                 .HasDefaultValue(true);
 
-            builder.Property(t => t.termos)
+            builder.Property(t => t.Termos)
                 .HasColumnName("termos");
 
-            builder.HasMany(t => t.lojas)
-                .WithOne(lt => lt.time)
-                .HasForeignKey(lt => lt.idLoja)
+            builder.HasMany(t => t.Lojas)
+                .WithOne(lt => lt.Time)
+                .HasForeignKey(lt => lt.IdLoja)
                 .OnDelete(DeleteBehavior.Cascade); ;
 
-            builder.Property(t => t.timePrincipalId).HasColumnName("id_time_principal");
-            builder.HasOne(t => t.timePrincipal)
-                .WithMany(t => t.homonimos)
-                .HasForeignKey(t => t.timePrincipalId)
+            builder.Property(t => t.TimePrincipalId).HasColumnName("id_time_principal");
+            builder.HasOne(t => t.TimePrincipal)
+                .WithMany(t => t.Homonimos)
+                .HasForeignKey(t => t.TimePrincipalId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasIndex(t => t.timePrincipalId);
-        }        
+            builder.HasIndex(t => t.TimePrincipalId);
+        }
     }
 }

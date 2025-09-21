@@ -1,10 +1,10 @@
-namespace backend.Infra.Data.Model
+namespace CacaMantos.Admin.API.Infra.Data.Model
 {
     public class LojaTimeModel : EntityBaseModel
     {
-        public Guid idLoja { get; set; }
-        public LojaModel loja { get; set; }
-        public Guid idTime { get; set; }
-        public TimeModel time { get; set; }        
+        public Guid IdLoja { get; set; }
+        public LojaModel Loja { get; set; }
+        public Guid IdTime { get; set; }
+        public TimeModel Time { get; set; }
     }
 }

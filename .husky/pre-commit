@@ -1,0 +1,23 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+### Backend
+echo "🔍 Verificando commit backend..."
+
+cd backend || exit 1
+
+# 1️⃣ Formatação
+dotnet format analyzers --verify-no-changes
+if [ $? -ne 0 ]; then
+  echo "❌ Código não está formatado. Execute 'dotnet format analyzers'."
+  exit 1
+fi
+
+# 2️⃣ Build
+dotnet build --no-restore -warnaserror
+if [ $? -ne 0 ]; then
+  echo "❌ Build falhou."
+  exit 1
+fi
+
+echo "✅ Commit aprovado."

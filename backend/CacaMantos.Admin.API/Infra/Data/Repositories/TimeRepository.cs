@@ -1,13 +1,15 @@
-using backend.Domain.IRepositories;
-using backend.Domain.Entities;
-using backend.Domain.Pesquisas;
-using backend.Common.DTO;
-using Mapster;
-using Microsoft.EntityFrameworkCore;
-using backend.Infra.Data.Model;
+using CacaMantos.Admin.API.Common.DTO;
+using CacaMantos.Admin.API.Domain.Entities;
+using CacaMantos.Admin.API.Domain.IRepositories;
+using CacaMantos.Admin.API.Domain.Pesquisas;
 using CacaMantos.Admin.API.Infra.Data.Helper;
+using CacaMantos.Admin.API.Infra.Data.Model;
 
-namespace backend.Infra.Data.Repositories
+using Mapster;
+
+using Microsoft.EntityFrameworkCore;
+
+namespace CacaMantos.Admin.API.Infra.Data.Repositories
 {
     public class TimeRepository : BaseRepository, ITimeRepository
     {
@@ -20,52 +22,51 @@ namespace backend.Infra.Data.Repositories
 
         public async Task<Time> Criar(Time time)
         {
-            if (time == null)
-                throw new ArgumentNullException(nameof(time));
+            ArgumentNullException.ThrowIfNull(time);
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            using var transaction = await Context.Database.BeginTransactionAsync().ConfigureAwait(false);
 
             try
             {
                 var timeModel = time.Adapt<TimeModel>();
 
                 if (time.TemTimePrincipal())
-                    timeModel.timePrincipalId = time.TimePrincipal.Id;
+                    timeModel.TimePrincipalId = time.TimePrincipal.Id;
 
-                await _context.Times.AddAsync(timeModel);
-                await _context.SaveChangesAsync();
+                await Context.Times.AddAsync(timeModel).ConfigureAwait(false);
+                await Context.SaveChangesAsync().ConfigureAwait(false);
 
                 if (time.TemTimesHomonimos())
                 {
-                    var timesHomonimos = _context.Times.Where(t => time.Homonimos.Select(th => th.Id).Contains(t.id)).ToList();
-                    timesHomonimos.ForEach(th => th.timePrincipalId = time.Id);
+                    var timesHomonimos = Context.Times.Where(t => time.Homonimos.Select(th => th.Id).Contains(t.Id)).ToList();
+                    timesHomonimos.ForEach(th => th.TimePrincipalId = time.Id);
                 }
 
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
+                await Context.SaveChangesAsync().ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
 
-                return await ConsultarDadosTimeParaRetorno(time);
+                return await ConsultarDadosTimeParaRetorno(time).ConfigureAwait(false);
             }
             catch
             {
-                await transaction.RollbackAsync();
+                await transaction.RollbackAsync().ConfigureAwait(false);
                 throw;
             }
         }
 
         public async Task<Time> Atualizar(Time time)
         {
-            if (time == null)
-                throw new ArgumentNullException(nameof(time));
+            ArgumentNullException.ThrowIfNull(time);
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            using var transaction = await Context.Database.BeginTransactionAsync().ConfigureAwait(false);
 
             try
             {
-                var timeModel = await _context.Times
-                    .Include(t => t.homonimos)
-                    .Include(l => l.timePrincipal)
-                    .FirstOrDefaultAsync(t => t.id == time.Id);
+                var timeModel = await Context.Times
+                    .Include(t => t.Homonimos)
+                    .Include(l => l.TimePrincipal)
+                    .FirstOrDefaultAsync(t => t.Id == time.Id)
+                    .ConfigureAwait(false);
 
                 if (timeModel == null)
                     throw new KeyNotFoundException($"Time com ID {time.Id} não encontrado.");
@@ -73,45 +74,47 @@ namespace backend.Infra.Data.Repositories
                 time.Adapt(timeModel);
 
                 if (time.TemTimePrincipal())
-                    timeModel.timePrincipalId = time.TimePrincipal.Id;
+                    timeModel.TimePrincipalId = time.TimePrincipal.Id;
 
-                _context.Times.Update(timeModel);
+                Context.Times.Update(timeModel);
 
                 if (time.TemTimesHomonimos())
                 {
-                    var timesHomonimos = _context.Times.Where(t => time.Homonimos.Select(th => th.Id).Contains(t.id)).ToList();
-                    timesHomonimos.ForEach(th => th.timePrincipalId = time.Id);
+                    var timesHomonimos = Context.Times.Where(t => time.Homonimos.Select(th => th.Id).Contains(t.Id)).ToList();
+                    timesHomonimos.ForEach(th => th.TimePrincipalId = time.Id);
                 }
 
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
+                await Context.SaveChangesAsync().ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
 
-                return await ConsultarDadosTimeParaRetorno(time);
+                return await ConsultarDadosTimeParaRetorno(time).ConfigureAwait(false);
             }
             catch
             {
-                await transaction.RollbackAsync();
+                await transaction.RollbackAsync().ConfigureAwait(false);
                 throw;
             }
         }
 
         public async Task<bool> Excluir(Guid id)
         {
-            var timeModel = await _context.Times.FirstOrDefaultAsync(l => l.id == id);
+            var timeModel = await Context.Times.FirstOrDefaultAsync(l => l.Id == id).ConfigureAwait(false);
             if (timeModel is null)
                 throw new KeyNotFoundException($"Time com ID {id} não encontrado.");
 
-            var removido = _context.Times.Remove(timeModel) is not null;
-            _context.SaveChanges();
+            var removido = Context.Times.Remove(timeModel) is not null;
+            await Context.SaveChangesAsync().ConfigureAwait(false);
             return removido;
         }
 
         public async Task<Time> Obter(Guid id)
         {
-            var timeModel = await _context.Times
-                                    .Include(l => l.homonimos)
-                                    .Include(l => l.timePrincipal)
-                                    .AsNoTracking().FirstOrDefaultAsync(l => l.id == id);
+            var timeModel = await Context.Times
+                                    .Include(l => l.Homonimos)
+                                    .Include(l => l.TimePrincipal)
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(l => l.Id == id)
+                                    .ConfigureAwait(false);
             if (timeModel is null)
                 throw new KeyNotFoundException($"Time com ID {id} não encontrado.");
 
@@ -123,33 +126,33 @@ namespace backend.Infra.Data.Repositories
             if (pesquisa is null)
                 return PaginaDTO<Time>.Vazia(1, 5);
 
-            var query = _context.Times.AsQueryable();
+            var query = Context.Times.AsQueryable();
 
             if (pesquisa.TemTrechoInformado())
             {
-                var trechoLike = $"%{pesquisa.Trecho.ToLowerInvariant()}%";
+                var trechoLike = $"%{pesquisa.Trecho}%";
                 query = query.Where(t =>
-                    EF.Functions.ILike(t.nome, trechoLike) ||
-                    EF.Functions.ILike(t.identificador, trechoLike)
+                    EF.Functions.ILike(t.Nome, trechoLike) ||
+                    EF.Functions.ILike(t.Identificador, trechoLike)
                 );
             }
 
             if (pesquisa.TemDestaqueInformado())
-                query = query.Where(t => t.destaque == pesquisa.Destaque.Value);
+                query = query.Where(t => t.Destaque == pesquisa.Destaque.Value);
 
             if (pesquisa.TemAtivoInformado())
-                query = query.Where(t => t.ativo == pesquisa.Ativo.Value);
+                query = query.Where(t => t.Ativo == pesquisa.Ativo.Value);
 
             if (pesquisa.TemPrincipalInformado())
-                query = query.Where(t => t.principal == pesquisa.Principal.Value);
+                query = query.Where(t => t.Principal == pesquisa.Principal.Value);
 
             var queryPaginada = query.AsNoTracking()
-                                .OrderBy(t => t.nome)
+                                .OrderBy(t => t.Nome)
                                 .Skip((pesquisa.Pagina - 1) * pesquisa.TamanhoPagina)
                                 .Take(pesquisa.TamanhoPagina);
 
-            var timesModel = await queryPaginada.ToListAsync();
-            var totalRegistros = await query.CountAsync();
+            var timesModel = await queryPaginada.ToListAsync().ConfigureAwait(false);
+            var totalRegistros = await query.CountAsync().ConfigureAwait(false);
 
             var times = timesModel.Adapt<List<Time>>();
 
@@ -158,21 +161,22 @@ namespace backend.Infra.Data.Repositories
 
         public Task<int> ObterQuantidadeTimes()
         {
-            return _context.Times.CountAsync();
+            return Context.Times.CountAsync();
         }
 
         public async Task<List<Time>> Consultar(IList<Guid> ids)
         {
-            var times = await this.utils.CarregarDadosDeIds(_context.Times, ids);
+            var times = await utils.CarregarDadosDeIds(Context.Times, ids).ConfigureAwait(false);
             return times.Adapt<List<Time>>();
         }
 
         private async Task<Time> ConsultarDadosTimeParaRetorno(Time time)
         {
-            var timeModelComHomonimos = await _context.Times
-                                .Include(t => t.homonimos)
+            var timeModelComHomonimos = await Context.Times
+                                .Include(t => t.Homonimos)
                                 .AsNoTracking()
-                                .FirstOrDefaultAsync(t => t.id == time.Id);
+                                .FirstOrDefaultAsync(t => t.Id == time.Id)
+                                .ConfigureAwait(false);
 
             return timeModelComHomonimos.Adapt<Time>();
         }

@@ -1,12 +1,12 @@
-namespace backend.Infra.Data.Model
+namespace CacaMantos.Admin.API.Infra.Data.Model
 {
     public class LojaModel : EntityBaseModel
-    {        
-        public String nome { get; set; }
-        public String site { get; set; }
-        public String urlBusca { get; set; }
-        public bool parceira { get; set; }
-        public bool ativa { get; set; }
-        public IList<LojaTimeModel> times { get; set; }
+    {
+        public String Nome { get; set; }
+        public String Site { get; set; }
+        public String UrlBusca { get; set; }
+        public bool Parceira { get; set; }
+        public bool Ativa { get; set; }
+        public IList<LojaTimeModel> Times { get; set; }
     }
 }
