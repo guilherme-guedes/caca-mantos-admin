@@ -22,7 +22,7 @@ fi
 
 # 3️⃣ Testes unitários
 echo "🏃 Rodando testes unitários..."
-dotnet test ./UnitTests/UnitTests.csproj --no-build --verbosity normal
+dotnet test ./CacaMantos.Admin.API.UnitTests/CacaMantos.Admin.API.UnitTests.csproj --no-build --verbosity normal
 if [ $? -ne 0 ]; then
   echo "❌ Testes unitários falharam."
   exit 1
