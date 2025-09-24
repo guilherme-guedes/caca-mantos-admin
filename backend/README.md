@@ -5,6 +5,7 @@
 - Endpoint para listar times elegíveis para serem homônimos (não principais e não homônimos de outro);
 
 ## Geral
+- Reestruturar (corrigir analyser e exceções editorconfig + noWarn (csproj) e directory.build)
 - Implementar demais endpoints << TESTAR
 - Migrar banco mongo dev para cloud (mesmo server prod ? ver outro usuario) <<
 

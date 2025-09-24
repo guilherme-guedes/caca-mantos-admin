@@ -28,7 +28,6 @@ csharp_space_around_conditional_operator = before_and_after
 # Usings
 csharp_using_directive_placement = outside_namespace:warning
 dotnet_sort_system_directives_first = true
-dotnet_separate_import_directive_groups = true
 
 # Naming conventions
 dotnet_naming_rule.classes_should_be_pascal_case.severity = warning
@@ -37,11 +36,23 @@ dotnet_naming_rule.classes_should_be_pascal_case.style = pascal_case_style
 dotnet_naming_symbols.all_classes.applicable_kinds = class
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 
-# Regras específicas para testes
+[Program.cs]
+dotnet_diagnostic.CA1052.severity = none
+dotnet_diagnostic.CA1852.severity = none
+
+# Testes
 [*Test.cs]
 dotnet_diagnostic.CA1052.severity = none
 dotnet_diagnostic.CA1515.severity = none
 dotnet_diagnostic.CA1812.severity = none
 dotnet_diagnostic.CA1852.severity = none
+dotnet_diagnostic.CA2007.severity = none
+dotnet_diagnostic.CA2234.severity = none
 dotnet_diagnostic.IDE0040.severity = none
 dotnet_diagnostic.IDE0062.severity = none
+
+[*Tests.*]
+dotnet_diagnostic.CA2007.severity = none
+
+# Ignore Geral
+dotnet_diagnostic.CA1822.severity = none
