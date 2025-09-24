@@ -10,11 +10,10 @@
 - Migrar banco mongo dev para cloud (mesmo server prod ? ver outro usuario) <<
 
 - middleware para log, cache e validação
-- testes integração
+- CI (Github actions)
 - Configurar / atualizar start e deploy (projeto infra) considerando postgres e mongo
 - Fila para recibmento de alterações (novo formato - deadleter e retry)
 - Outbox para resolver depois persistência nos bancos (redis, mongo e postgres)
-- CI (Github actions)
 - Testes e2e
 - Analise de codigo (cobertura, badsmells, qtd linhas classe, metodo, etc)
 - Logs (estruturados)

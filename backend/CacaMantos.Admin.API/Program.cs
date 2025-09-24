@@ -7,7 +7,7 @@ using CacaMantos.Admin.API.Infra.Data;
 using CacaMantos.Admin.API.Infra.Data.Helper;
 using CacaMantos.Admin.API.Infra.Data.Mapping.Entities;
 using CacaMantos.Admin.API.Infra.Data.Repositories;
-
+using CacaMantos.Admin.API.Presentation.Middlewares;
 using Mapster;
 
 using MapsterMapper;
@@ -25,23 +25,12 @@ namespace CacaMantos.Admin.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Configuration
-                .SetBasePath(builder.Environment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.Local.json", optional: true)
-                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables()
-                .AddCommandLine(args);
+
+            AdicionarInputsConfiguracao(args, builder);
 
             try
             {
-
-                Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration)
-                                                                .Enrich.FromLogContext()
-                                                                .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
-                                                                .CreateLogger();
-
-                builder.Host.UseSerilog();
+                ConfigurarLogging(builder);
 
                 RegistrarInfraestrutura(builder);
                 RegistrarAplicacao(builder);
@@ -61,8 +50,9 @@ namespace CacaMantos.Admin.API
 
                 //if (!app.Environment.IsDevelopment())
                 app.UseHttpsRedirection();
-
+                app.UseMiddleware<TracingMiddleware>();
                 app.UseSerilogRequestLogging();
+                app.UseMiddleware<ErrorHandlingMiddleware>();
 
                 app.UseRouting();
                 app.UseHttpMetrics();
@@ -77,6 +67,27 @@ namespace CacaMantos.Admin.API
             {
                 Log.CloseAndFlush();
             }
+        }
+
+        private static void ConfigurarLogging(WebApplicationBuilder builder)
+        {
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration)
+                                                                            .Enrich.FromLogContext()
+                                                                            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] (CorrId={CorrelationId}, ReqId={RequestId}) {Message:lj}{NewLine}{Exception}", formatProvider: CultureInfo.InvariantCulture)
+                                                                            .CreateLogger();
+                                                                            
+            builder.Host.UseSerilog();
+        }
+
+        private static void AdicionarInputsConfiguracao(string[] args, WebApplicationBuilder builder)
+        {
+            builder.Configuration
+                            .SetBasePath(builder.Environment.ContentRootPath)
+                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                            .AddJsonFile($"appsettings.Local.json", optional: true)
+                            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+                            .AddEnvironmentVariables()
+                            .AddCommandLine(args);
         }
 
         private static void RegistrarMappers(WebApplicationBuilder builder)
