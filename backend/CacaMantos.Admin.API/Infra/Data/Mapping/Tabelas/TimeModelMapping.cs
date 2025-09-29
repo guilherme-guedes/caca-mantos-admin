@@ -45,18 +45,16 @@ namespace CacaMantos.Admin.API.Infra.Data.Mapping.Tabelas
             builder.Property(t => t.Termos)
                 .HasColumnName("termos");
 
-            builder.HasMany(t => t.Lojas)
-                .WithOne(lt => lt.Time)
-                .HasForeignKey(lt => lt.IdLoja)
-                .OnDelete(DeleteBehavior.Cascade); ;
-
-            builder.Property(t => t.TimePrincipalId).HasColumnName("id_time_principal");
+            builder.Property(t => t.IdTimePrincipal).HasColumnName("id_time_principal");
             builder.HasOne(t => t.TimePrincipal)
                 .WithMany(t => t.Homonimos)
-                .HasForeignKey(t => t.TimePrincipalId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(t => t.IdTimePrincipal)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
 
-            builder.HasIndex(t => t.TimePrincipalId);
+            builder.HasIndex(t => t.IdTimePrincipal);
+            builder.HasIndex(t => t.Identificador);
+            builder.HasIndex(t => t.Nome);
         }
     }
 }

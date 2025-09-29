@@ -123,7 +123,7 @@ namespace CacaMantos.Admin.API.Infra.Data.Repositories
         {
             var lojaModel = await Context.Lojas
                                     .Include(l => l.Times)
-                                    .Include("times.time")
+                                    .ThenInclude(tl => tl.Time)
                                     .AsNoTracking()
                                     .FirstOrDefaultAsync(l => l.Id == id).ConfigureAwait(false);
             if (lojaModel is null)

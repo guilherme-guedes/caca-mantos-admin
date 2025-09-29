@@ -1,6 +1,5 @@
 using CacaMantos.Admin.API.Domain.Entities;
 using CacaMantos.Admin.API.Infra.Data.Model;
-
 using Mapster;
 
 namespace CacaMantos.Admin.API.Infra.Data.Mapping.Entities
@@ -19,8 +18,30 @@ namespace CacaMantos.Admin.API.Infra.Data.Mapping.Entities
                         src.Destaque,
                         src.Ativo,
                         src.Principal,
-                        src.Homonimos != null ? src.Homonimos.Adapt<List<Time>>() : null,
-                        src.TimePrincipal != null ? src.TimePrincipal.Adapt<Time>() : null
+                        src.Homonimos != null ? src.Homonimos.Select(h => new Time(
+                            h.Id,
+                            h.Nome,
+                            h.Identificador,
+                            h.NomeBusca,
+                            h.Termos,
+                            h.Destaque,
+                            h.Ativo,
+                            h.Principal,
+                            null,
+                            null
+                        )).ToList() : null,
+                        src.TimePrincipal != null ? new Time(
+                            src.TimePrincipal.Id,
+                            src.TimePrincipal.Nome,
+                            src.TimePrincipal.Identificador,
+                            src.TimePrincipal.NomeBusca,
+                            src.TimePrincipal.Termos,
+                            src.TimePrincipal.Destaque,
+                            src.TimePrincipal.Ativo,
+                            src.TimePrincipal.Principal,
+                            null,
+                            null)
+                        : null
                     ));
 
             config.NewConfig<LojaTimeModel, Time>()
@@ -36,7 +57,7 @@ namespace CacaMantos.Admin.API.Infra.Data.Mapping.Entities
                         null,
                         null
                     ));
-
+                    
             config.NewConfig<Time, TimeModel>()
                   .MapWith(src => new TimeModel()
                   {

@@ -7,6 +7,6 @@ namespace CacaMantos.Admin.API.Infra.Data.Model
         public String UrlBusca { get; set; }
         public bool Parceira { get; set; }
         public bool Ativa { get; set; }
-        public IList<LojaTimeModel> Times { get; set; }
+        public virtual IList<LojaTimeModel> Times { get; set; }
     }
 }

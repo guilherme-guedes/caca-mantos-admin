@@ -4,7 +4,6 @@ using CacaMantos.Admin.API.Domain.IRepositories;
 using CacaMantos.Admin.API.Domain.Pesquisas;
 using CacaMantos.Admin.API.Infra.Data.Helper;
 using CacaMantos.Admin.API.Infra.Data.Model;
-
 using Mapster;
 
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +30,7 @@ namespace CacaMantos.Admin.API.Infra.Data.Repositories
                 var timeModel = time.Adapt<TimeModel>();
 
                 if (time.TemTimePrincipal())
-                    timeModel.TimePrincipalId = time.TimePrincipal.Id;
+                    timeModel.IdTimePrincipal = time.TimePrincipal.Id;
 
                 await Context.Times.AddAsync(timeModel).ConfigureAwait(false);
                 await Context.SaveChangesAsync().ConfigureAwait(false);
@@ -39,7 +38,7 @@ namespace CacaMantos.Admin.API.Infra.Data.Repositories
                 if (time.TemTimesHomonimos())
                 {
                     var timesHomonimos = Context.Times.Where(t => time.Homonimos.Select(th => th.Id).Contains(t.Id)).ToList();
-                    timesHomonimos.ForEach(th => th.TimePrincipalId = time.Id);
+                    timesHomonimos.ForEach(th => th.IdTimePrincipal = time.Id);
                 }
 
                 await Context.SaveChangesAsync().ConfigureAwait(false);
@@ -74,14 +73,14 @@ namespace CacaMantos.Admin.API.Infra.Data.Repositories
                 time.Adapt(timeModel);
 
                 if (time.TemTimePrincipal())
-                    timeModel.TimePrincipalId = time.TimePrincipal.Id;
+                    timeModel.IdTimePrincipal = time.TimePrincipal.Id;
 
                 Context.Times.Update(timeModel);
 
                 if (time.TemTimesHomonimos())
                 {
                     var timesHomonimos = Context.Times.Where(t => time.Homonimos.Select(th => th.Id).Contains(t.Id)).ToList();
-                    timesHomonimos.ForEach(th => th.TimePrincipalId = time.Id);
+                    timesHomonimos.ForEach(th => th.IdTimePrincipal = time.Id);
                 }
 
                 await Context.SaveChangesAsync().ConfigureAwait(false);

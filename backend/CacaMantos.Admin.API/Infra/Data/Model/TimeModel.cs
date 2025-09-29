@@ -10,8 +10,8 @@ namespace CacaMantos.Admin.API.Infra.Data.Model
         public bool Ativo { get; set; }
         public bool Principal { get; set; }
         public IList<TimeModel> Homonimos { get; set; }
-        public IList<LojaTimeModel> Lojas { get; set; }
-        public Guid? TimePrincipalId { get; set; }
-        public TimeModel TimePrincipal { get; set; }
+        public virtual IList<LojaTimeModel> Lojas { get; set; }
+        public Guid? IdTimePrincipal { get; set; }
+        public virtual TimeModel TimePrincipal { get; set; }
     }
 }

@@ -37,11 +37,9 @@ namespace CacaMantos.Admin.API.Infra.Data.Mapping.Tabelas
             builder.Property(l => l.Ativa)
                 .HasColumnName("ativa")
                 .HasDefaultValue(true);
-
-            builder.HasMany(l => l.Times)
-                .WithOne(t => t.Loja)
-                .HasForeignKey(lt => lt.IdTime)
-                .OnDelete(DeleteBehavior.Cascade); ;
+                
+            builder.HasIndex(t => t.Nome);
+            builder.HasIndex(t => t.Site);
         }
     }
 }

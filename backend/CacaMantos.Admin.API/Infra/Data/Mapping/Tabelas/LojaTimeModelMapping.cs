@@ -15,15 +15,17 @@ namespace CacaMantos.Admin.API.Infra.Data.Mapping.Tabelas
             builder.Property(lt => lt.Id)
                 .HasColumnName("id");
 
-            builder.Property(l => l.IdTime).HasColumnName("id_time");
-            builder.HasOne(lt => lt.Time)
+            builder.Property(lt => lt.IdTime).HasColumnName("id_time");                
+            builder.HasOne(tl => tl.Time)
                 .WithMany(t => t.Lojas)
-                .HasForeignKey(lt => lt.IdTime);
-
-            builder.Property(l => l.IdLoja).HasColumnName("id_loja");
-            builder.HasOne(lt => lt.Loja)
+                .HasForeignKey(tl => tl.IdTime)
+                .OnDelete(DeleteBehavior.Cascade); 
+            
+            builder.Property(lt => lt.IdLoja).HasColumnName("id_loja");
+            builder.HasOne(tl => tl.Loja)
                 .WithMany(l => l.Times)
-                .HasForeignKey(lt => lt.IdLoja);
+                .HasForeignKey(tl => tl.IdLoja)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
